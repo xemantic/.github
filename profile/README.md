@@ -10,3 +10,6 @@ Our collective is focused on writing humanistic code for the betterment of the s
 * AI and Machine Learning solutions for mental health ([Krisenchat](https://krisenchat.de/))
 * cricitcal but immersive computational and new media art installations and shows (e.g. [404 show](https://xemantic.com/404/)) 
 * open source software software used in in these projects (e.g [OPENRNDR](https://openrndr.org/))
+
+If you like what we do, or use our open source libraries, please consider becomeing one of our
+[<img alt="GitHub Sponsors" src="https://img.shields.io/github/sponsors/xemantic">](https://github.com/sponsors/xemantic)
