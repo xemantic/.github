@@ -13,5 +13,5 @@ Our collective is focused on writing humanistic code for the betterment of the s
 * cricitcal but immersive computational and new media art installations and shows (e.g. [404 show](https://xemantic.com/404/)) 
 * open source software used in in these projects (e.g [OPENRNDR](https://openrndr.org/))
 
-If you like what we do, or use our open source libraries, please consider becomeing one of our
+If you like what we do, or if you are using our open source software, please consider becomeing one of our
 [<img alt="GitHub Sponsors" src="https://img.shields.io/github/sponsors/xemantic?style=for-the-badge&logo=GitHub-Sponsors">](https://github.com/sponsors/xemantic)
