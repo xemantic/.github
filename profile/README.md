@@ -1,9 +1,9 @@
-[<img alt="X (formerly Twitter) Follow" src="https://img.shields.io/twitter/follow/KazikPogoda?style=for-the-badge&label=Follow on X">](https://x.com/KazikPogoda)
-[<img alt="YouTube Channel Subscribers" src="https://img.shields.io/youtube/channel/subscribers/UCLWGRPqrPBS7CDuaPxODmRQ?style=for-the-badge&label=YouTube&logo=youtube">](https://www.youtube.com/kazikPogoda)
-[<img alt="GitHub Org's stars" src="https://img.shields.io/github/stars/xemantic?style=for-the-badge&logo=github&label=GitHub stars">]()
-[<img alt="discord server" src="https://dcbadge.limes.pink/api/server/https://discord.gg/vQktqqN2Vn">](https://discord.gg/vQktqqN2Vn)
-[<img alt="discord users online" src="https://img.shields.io/discord/811561179280965673?style=for-the-badge&logo=discord&logoColor=white">](https://discord.gg/vQktqqN2Vn)
-[<img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" />](https://www.instagram.com/xemantic.berlin)
+[<img alt="X (formerly Twitter) Follow" src="https://img.shields.io/twitter/follow/KazikPogoda?label=Follow on X">](https://x.com/KazikPogoda)
+[<img alt="YouTube Channel Subscribers" src="https://img.shields.io/youtube/channel/subscribers/UCLWGRPqrPBS7CDuaPxODmRQ?&label=YouTube&logo=youtube">](https://www.youtube.com/kazikPogoda)
+[<img alt="GitHub Org's stars" src="https://img.shields.io/github/stars/xemantic?logo=github&label=GitHub stars">]()
+[<img alt="discord server" src="https://dcbadge.limes.pink/api/server/https://discord.gg/vQktqqN2Vn?style=flat">](https://discord.gg/vQktqqN2Vn)
+[<img alt="discord users online" src="https://img.shields.io/discord/811561179280965673&logo=discord&logoColor=white">](https://discord.gg/vQktqqN2Vn)
+[<img src="https://img.shields.io/badge/Instagram-E4405F?logo=instagram&logoColor=white" />](https://www.instagram.com/xemantic.berlin)
 
 [Xemantic](https://xemantic.com) is a collective of applied philosophy, residing at [Prachtsaal](https://prachtsaal.berlin)
 ([GitHub](https://github.com/prachtsaal/)),
