@@ -8,7 +8,7 @@
 [Xemantic](https://xemantic.com) is a collective of applied philosophy, residing at [Prachtsaal](https://prachtsaal.berlin)
 ([GitHub](https://github.com/prachtsaal/)),
 a non-profit art cooperative from Berlin.
-Our collective is focused on writing humanistic code for the betterment of the society. We are developing:
+Our collective was founded by [Julia Thomas](https://github.com/uncannyJulia) and [Kazik Pogoda](https://github.com/morisil) and is focused on writing humanistic code for the betterment of the society. We are developing:
 * AI and Machine Learning solutions for mental health ([Krisenchat](https://krisenchat.de/))
 * cricitcal but immersive computational and new media art installations and shows (e.g. [404 show](https://xemantic.com/404/)) 
 * open source software used in in these projects (e.g [OPENRNDR](https://openrndr.org/))
