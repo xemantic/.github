@@ -14,4 +14,4 @@ Our collective was founded by [Julia Thomas](https://github.com/uncannyJulia) an
 * open source software used in in these projects (e.g [OPENRNDR](https://openrndr.org/))
 
 If you like what we do, or if you are using our open source software, please consider becomeing one of our
-[<img alt="GitHub Sponsors" src="https://img.shields.io/github/sponsors/xemantic?style=for-the-badge&logo=GitHub-Sponsors">](https://github.com/sponsors/xemantic)
+[<img alt="GitHub Sponsors" src="https://img.shields.io/github/sponsors/xemantic?logo=GitHub-Sponsors">](https://github.com/sponsors/xemantic)
