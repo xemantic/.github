@@ -1,7 +1,6 @@
 [<img alt="X (formerly Twitter) Follow" src="https://img.shields.io/twitter/follow/KazikPogoda?label=Follow on X">](https://x.com/KazikPogoda)
 [<img alt="YouTube Channel Subscribers" src="https://img.shields.io/youtube/channel/subscribers/UCLWGRPqrPBS7CDuaPxODmRQ?&label=YouTube&logo=youtube">](https://www.youtube.com/kazikPogoda)
 [<img alt="GitHub Org's stars" src="https://img.shields.io/github/stars/xemantic?logo=github&label=GitHub stars">]()
-[<img alt="discord server" src="https://dcbadge.limes.pink/api/server/https://discord.gg/vQktqqN2Vn?style=flat">](https://discord.gg/vQktqqN2Vn)
 [<img alt="discord users online" src="https://img.shields.io/discord/811561179280965673?logo=discord&logoColor=white">](https://discord.gg/vQktqqN2Vn)
 [<img src="https://img.shields.io/badge/Instagram-E4405F?logo=instagram&logoColor=white" />](https://www.instagram.com/xemantic.berlin)
 
