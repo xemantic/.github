@@ -15,3 +15,15 @@ Our collective was founded by [Julia Thomas](https://github.com/uncannyJulia) an
 
 If you like what we do, or if you are using our open source software, please consider becomeing one of our
 [<img alt="GitHub Sponsors" src="https://img.shields.io/github/sponsors/xemantic?logo=GitHub-Sponsors">](https://github.com/sponsors/xemantic)
+
+## Stay Connected
+- 📰 [Newsletter](https://buttondown.com/xemantic)
+- 💼 [Xemantic@LinkedIn](https://www.linkedin.com/company/xemantic-berlin/)
+- 💼 [Kazik@LinkedIn](https://www.linkedin.com/in/kpogoda/)
+- 🔷 [Discord](https://discord.gg/vQktqqN2Vn)
+- 👁 [Instagram](https://www.instagram.com/xemantic.berlin)
+- 🦋 [BlueSky](https://bsky.app/profile/xemantic.com)
+- 🎥 [YouTube](https://www.youtube.com/@KazikPogoda)
+- 🎬 [Vimeo](https://vimeo.com/kazikpogoda)
+- 🌐 [xemantic.com](https://xemantic.com)
+- 🎨 [prachtsaal.berlin](https://prachtsaal.berlin) - If you visit, the tea is on us.
