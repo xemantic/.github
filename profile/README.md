@@ -5,6 +5,9 @@
 [![Bluesky](https://img.shields.io/badge/Bluesky-0285FF?logo=bluesky&logoColor=fff)](https://bsky.app/profile/xemantic.com)
 [![LinkedIn](https://custom-icon-badges.demolab.com/badge/LinkedIn-0A66C2?logo=linkedin-white&logoColor=fff)](https://linkedin.com/company/xemantic-berlin)
 
+> [!IMPORTANT]
+> 🤖 **Build Your Own AI Agents** - Join our one-day Agentic AI & Creative Coding Workshop in Berlin (Spring 2025), led by AI hack Berlin 2024 winner Kazik Pogoda. Learn to create autonomous AI agents using Anthropic's API, engineer advanced prompts, and give your agents tools to control machines. Workshops run Tuesdays (Feb 25 - Mar 25) at Prachtsaal Berlin, limited to 15 participants. 150 EUR contribution supports open source development. All examples use Kotlin (crash course included) but focus on meta-principles of AI agent development. Details: <https://xemantic.com/ai/workshops>
+
 [Xemantic](https://xemantic.com) is a collective of applied philosophy, residing at [Prachtsaal](https://prachtsaal.berlin)
 ([GitHub](https://github.com/prachtsaal/)),
 a non-profit art cooperative from Berlin.
