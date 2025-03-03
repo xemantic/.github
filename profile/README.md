@@ -20,13 +20,15 @@ If you like what we do, or if you are using our open source software, please con
 [<img alt="GitHub Sponsors" src="https://img.shields.io/github/sponsors/xemantic?logo=GitHub-Sponsors">](https://github.com/sponsors/xemantic)
 
 ## Stay Connected
-- 📰 [Newsletter](https://buttondown.com/xemantic)
-- 💼 [Xemantic@LinkedIn](https://www.linkedin.com/company/xemantic-berlin/)
-- 💼 [Kazik@LinkedIn](https://www.linkedin.com/in/kpogoda/)
-- 🔷 [Discord](https://discord.gg/vQktqqN2Vn)
-- 👁 [Instagram](https://www.instagram.com/xemantic.berlin)
-- 🦋 [BlueSky](https://bsky.app/profile/xemantic.com)
-- 🎥 [YouTube](https://www.youtube.com/@KazikPogoda)
-- 🎬 [Vimeo](https://vimeo.com/kazikpogoda)
-- 🌐 [xemantic.com](https://xemantic.com)
-- 🎨 [prachtsaal.berlin](https://prachtsaal.berlin) - If you visit, the tea is on us.
+
+- 🌐 **Main Website**: Discover our philosophy and projects at [xemantic.com](https://xemantic.com)
+- 💻 **GitHub**: Explore our open-source libraries and tools at [github.com/xemantic](https://github.com/xemantic/)
+- 🔷 **Discord**: Chat with the community on our [discord server](https://discord.gg/vQktqqN2Vn)
+- 👁 **Instagram**: See our latest artwork [@xemantic.berlin](https://www.instagram.com/xemantic.berlin)
+- 💼 **LinkedIn**: Connect professionally with [Xemantic](https://www.linkedin.com/company/xemantic-berlin/) and [Kazik Pogoda](https://www.linkedin.com/in/kpogoda/)
+- 🦋 **Bluesky**: Join the conversation at [@xemantic.com](https://bsky.app/profile/xemantic.com)
+- 🎥 **YouTube**: Watch tutorials and presentations at [@KazikPogoda](https://www.youtube.com/@KazikPogoda)
+- 🎬 **Vimeo**: See our creative projects at [vimeo.com/kazikpogoda](https://vimeo.com/kazikpogoda)
+- 👥 **Meetup**: Join our [AI x Prachtsaal](https://www.meetup.com/ai-x-prachtsaal-berlin/) group
+- 🎨 **Prachtsaal**: Visit our art cooperative space at [prachtsaal.berlin](https://prachtsaal.berlin)
+  
