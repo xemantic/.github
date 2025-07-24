@@ -1,5 +1,5 @@
 [<img alt="YouTube Channel Subscribers" src="https://img.shields.io/youtube/channel/subscribers/UCLWGRPqrPBS7CDuaPxODmRQ?&label=YouTube&logo=youtube">](https://www.youtube.com/kazikPogoda)
-[<img alt="GitHub Org's stars" src="https://img.shields.io/github/stars/xemantic?logo=github&label=GitHub stars">]()
+[<img alt="Xemantic's GitHub stars" src="https://img.shields.io/github/stars/xemantic?logo=github&label=GitHub stars">]([https://](https://github.com/orgs/xemantic/repositories))
 [<img alt="discord users online" src="https://img.shields.io/discord/811561179280965673?logo=discord&logoColor=white">](https://discord.gg/vQktqqN2Vn)
 [<img src="https://img.shields.io/badge/Instagram-E4405F?logo=instagram&logoColor=white" />](https://www.instagram.com/xemantic.berlin)
 [![Bluesky](https://img.shields.io/badge/Bluesky-0285FF?logo=bluesky&logoColor=fff)](https://bsky.app/profile/xemantic.com)
