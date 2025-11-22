@@ -43,6 +43,7 @@ jobs:
 
           for REPO in $REPOS; do
             REPO_URL="https://github.com/$REPO.git"
+            echo "Cloning: $REPO_URL"
             AUTHENTICATED_REPO=$(echo "$REPO_URL" | sed "s/https:\/\//https:\/\/$GH_PAT@/g")
             
             # Determine the default branch dynamically and clone only that branch
