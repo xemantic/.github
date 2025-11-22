@@ -36,7 +36,9 @@ jobs:
           GH_PAT: ${{ secrets.GITHUBTOKEN }}
         run: |
           # Get a list of public repositories that are not forks
-          REPOS=$(curl -H "Authorization: token $GH_PAT" -s "https://api.github.com/user/repos?per_page=100" | jq -r '.[] | select(.fork == false) | .full_name') || echo "Error fetching repositories"
+          ORG_NAME="xemantic"
+          REPOS=$(curl -H "Authorization: token $GH_PAT" -s "https://api.github.com/orgs/$ORG_NAME/repos?per_page=100&type=public" | jq -r '.[] | select(.fork == false) | .full_name')
+          # REPOS=$(curl -H "Authorization: token $GH_PAT" -s "https://api.github.com/user/repos?per_page=100" | jq -r '.[] | select(.fork == false) | .full_name') || echo "Error fetching repositories"
 
           mkdir -p public-repos
           cd public-repos
