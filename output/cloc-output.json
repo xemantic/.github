@@ -1,17 +1,17 @@
 {"header" : {
   "cloc_url"           : "github.com/AlDanial/cloc",
   "cloc_version"       : "1.98",
-  "elapsed_seconds"    : 0.635944128036499,
+  "elapsed_seconds"    : 0.643584012985229,
   "n_files"            : 993,
-  "n_lines"            : 138588,
-  "files_per_second"   : 1561.45792723321,
-  "lines_per_second"   : 217924.804853369,
+  "n_lines"            : 138861,
+  "files_per_second"   : 1542.92210490752,
+  "lines_per_second"   : 215762.040694424,
   "report_file"        : "../output/cloc-output.json"},
 "Kotlin" :{
   "nFiles": 411,
-  "blank": 7430,
-  "comment": 11460,
-  "code": 40731},
+  "blank": 7470,
+  "comment": 11468,
+  "code": 40978},
 "JavaScript" :{
   "nFiles": 158,
   "blank": 6100,
@@ -24,9 +24,9 @@
   "code": 7625},
 "Gradle" :{
   "nFiles": 105,
-  "blank": 1179,
-  "comment": 1097,
-  "code": 6016},
+  "blank": 1190,
+  "comment": 1092,
+  "code": 5988},
 "Maven" :{
   "nFiles": 27,
   "blank": 176,
@@ -113,7 +113,7 @@
   "comment": 0,
   "code": 7},
 "SUM": {
-  "blank": 18267,
-  "comment": 29394,
-  "code": 90927,
+  "blank": 18318,
+  "comment": 29397,
+  "code": 91146,
   "nFiles": 993} }
