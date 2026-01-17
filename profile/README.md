@@ -31,4 +31,6 @@ If you like what we do, or if you are using our open source software, please con
 - 🎬 **Vimeo**: See our creative projects at [vimeo.com/kazikpogoda](https://vimeo.com/kazikpogoda)
 - 👥 **Meetup**: Join our [AI x Prachtsaal](https://www.meetup.com/ai-x-prachtsaal-berlin/) group
 - 🎨 **Prachtsaal**: Visit our art cooperative space at [prachtsaal.berlin](https://prachtsaal.berlin)
-  
+
+<!-- LANGUAGES BREAKDOWN START -->
+<!-- LANGUAGES BREAKDOWN END -->
