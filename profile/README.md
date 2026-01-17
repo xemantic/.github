@@ -57,8 +57,4 @@ If you like what we do, or if you are using our open source software, please con
 Lines of code across all Xemantic open source projects:
 
 <!-- loc -->
-| Language | Files | Lines of Code |
-|----------|------:|--------------:|
-| Kotlin | 500 | 50000 |
-| **Total** | **500** | **50000** |
 <!-- /loc -->
