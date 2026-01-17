@@ -58,4 +58,39 @@ If you like what we do, or if you are using our open source software, please con
 Lines of code across all Xemantic open source projects:
 
 <!-- loc -->
+| Language | Files | Lines of Code |
+|----------|------:|--------------:|
+| Kotlin | 411 | 41056 |
+| HTML | 172 | 36436 |
+| CSS | 23 | 27265 |
+| Markdown | 115 | 14594 |
+| JavaScript | 43 | 6024 |
+| Gradle | 105 | 5995 |
+| Java | 144 | 4803 |
+| YAML | 77 | 2226 |
+| Bourne Shell | 28 | 1876 |
+| SVG | 15 | 1594 |
+| JSON | 6 | 1291 |
+| Maven | 18 | 1190 |
+| DOS Batch | 14 | 971 |
+| TOML | 26 | 730 |
+| XML | 52 | 648 |
+| Text | 16 | 441 |
+| TypeScript | 7 | 325 |
+| Properties | 57 | 309 |
+| HCL | 5 | 291 |
+| Python | 7 | 262 |
+| Groovy | 2 | 203 |
+| Rust | 3 | 195 |
+| Go | 2 | 123 |
+| C# | 1 | 105 |
+| C | 2 | 104 |
+| CSV | 9 | 77 |
+| GLSL | 2 | 59 |
+| make | 1 | 59 |
+| SQL | 1 | 44 |
+| Bourne Again Shell | 1 | 30 |
+| Ruby | 1 | 21 |
+| MSBuild script | 1 | 7 |
+| **Total** | **1367** | **149354** |
 <!-- /loc -->
