@@ -1,0 +1,70 @@
+# Builds the release
+name: Build release
+
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  build_release:
+    runs-on: ubuntu-latest
+    permissions:
+      # Give the default GITHUB_TOKEN write permission to commit and push the
+      # added or changed files to the repository.
+      contents: write
+    steps:
+      - name: Write release version
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          echo Version: $VERSION
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Checkout sources
+        uses: actions/checkout@v6.0.1
+
+      - name: Setup Java
+        uses: actions/setup-java@v5.1.0
+        with:
+          distribution: ${{ vars.DEFAULT_JAVA_DISTRIBUTION }}
+          java-version: ${{ vars.DEFAULT_JAVA_VERSION }}
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5.0.0
+
+      - name: Build and Publish release
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
+          JRELEASER_DISCORD_WEBHOOK: ${{ secrets.DISCORD_ANNOUCEMENTS_WEBHOOK }}
+          JRELEASER_LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          JRELEASER_LINKEDIN_OWNER: ${{ secrets.LINKEDIN_OWNER }}
+          JRELEASER_BLUESKY_HOST: ${{ vars.BLUESKY_HOST }}
+          JRELEASER_BLUESKY_HANDLE: ${{ vars.BLUESKY_HANDLE }}
+          JRELEASER_BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
+
+        run: ./gradlew -Pversion=$VERSION -PjvmOnlyBuild=false build publishToMavenCentral jreleaserAnnounce --no-configuration-cache
+
+      - name: Get target branch for tag
+        run: |
+          git fetch --all
+          TARGET_BRANCH=$(git branch -r --contains $GITHUB_REF | grep -v "HEAD" | head -n 1 | sed 's/origin\///')
+          echo "Target branch for tag: $TARGET_BRANCH"
+          echo "TARGET_BRANCH=$TARGET_BRANCH" >> $GITHUB_ENV
+
+      - name: Checkout target branch
+        uses: actions/checkout@v6.0.1
+        with:
+          ref: ${{ env.TARGET_BRANCH }}
+          fetch-depth: 0
+
+      - name: Update versions after release
+        run: ./gradlew -Pversion=$VERSION updateVersionsAfterRelease
+
+      - name: Commit version updates after release
+        uses: stefanzweifel/git-auto-commit-action@v7.1.0
+        with:
+          commit_message: Version updated to ${{ env.VERSION }} in README.md, next snapshot in gradle.properties
+          file_pattern: 'README.md gradle.properties'
