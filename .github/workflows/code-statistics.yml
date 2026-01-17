@@ -23,7 +23,7 @@ jobs:
 
       - name: Count Lines of Code and Update README
         env:
-          GH_TOKEN: ${{ secrets.GH_PAT }}
+          GH_TOKEN: ${{ secrets.WORKFLOW_SECRET }}
         run: |
           chmod +x ./scripts/count-loc.sh ./scripts/update-stats.sh
           ./scripts/count-loc.sh | ./scripts/update-stats.sh
