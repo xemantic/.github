@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6.0.1
 
       # Install required dependencies: jq (JSON processor), cloc (count lines of code), and locale settings
       - name: Install Dependencies
