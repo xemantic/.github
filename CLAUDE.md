@@ -12,10 +12,11 @@ This is the `.github` special repository for the Xemantic GitHub organization. I
 ## Repository Structure
 
 - `profile/README.md` - Organization profile displayed on GitHub
+- `profile/ABOUT.md` - Detailed about page with code statistics
 - `README.md` - Repository documentation
 - `.github/workflows/code-statistics.yml` - GitHub Actions workflow for LOC counting
 - `scripts/count-loc.sh` - Script that clones repos and counts lines of code
-- `scripts/update-stats.sh` - Script that updates profile README with statistics
+- `scripts/update-stats.sh` - Script that updates profile ABOUT.md with statistics
 
 ## Workflow Details
 
@@ -23,8 +24,8 @@ The `code-statistics.yml` workflow:
 - Runs weekly on Sundays at midnight UTC, on push to main, or via manual trigger
 - Clones all non-fork public repos from the xemantic organization
 - Uses `cloc` to count lines of code
-- Updates `profile/README.md` between `<!-- loc -->` and `<!-- /loc -->` markers
+- Updates `profile/ABOUT.md` between `<!-- loc -->` and `<!-- /loc -->` markers
 
 ## Secrets Required
 
-- `GH_PAT` - Used for fetching organization repositories and pushing updates
+- `WORKFLOW_SECRET` - Used for fetching organization repositories and pushing updates
