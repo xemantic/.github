@@ -28,6 +28,10 @@ on:
         required: false
         type: string
         default: ''
+    secrets:
+      env_secrets:
+        description: 'Secret environment variables, one per line in KEY=value format'
+        required: false
 
 jobs:
   build:
@@ -49,6 +53,10 @@ jobs:
       - name: Set environment variables
         if: inputs.env != ''
         run: echo "${{ inputs.env }}" >> $GITHUB_ENV
+
+      - name: Set secret environment variables
+        if: ${{ secrets.env_secrets != '' }}
+        run: echo "${{ secrets.env_secrets }}" >> $GITHUB_ENV
 
       - name: Build
         run: ./gradlew ${{ inputs.gradle_args }}
