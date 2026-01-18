@@ -55,7 +55,6 @@ jobs:
         run: echo "${{ inputs.env }}" >> $GITHUB_ENV
 
       - name: Set secret environment variables
-        if: ${{ secrets.env_secrets != '' }}
         run: echo "${{ secrets.env_secrets }}" >> $GITHUB_ENV
 
       - name: Build
