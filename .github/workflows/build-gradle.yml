@@ -65,7 +65,9 @@ jobs:
         run: |
           echo "ORG_GRADLE_PROJECT_mavenCentralUsername=${{ secrets.MAVEN_CENTRAL_USERNAME }}" >> $GITHUB_ENV
           echo "ORG_GRADLE_PROJECT_mavenCentralPassword=${{ secrets.MAVEN_CENTRAL_PASSWORD }}" >> $GITHUB_ENV
-          echo "ORG_GRADLE_PROJECT_signingInMemoryKey=${{ secrets.SIGNING_KEY }}" >> $GITHUB_ENV
+          echo 'ORG_GRADLE_PROJECT_signingInMemoryKey<<EOF' >> $GITHUB_ENV
+          echo '${{ secrets.SIGNING_KEY }}' >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
           echo "ORG_GRADLE_PROJECT_signingInMemoryKeyPassword=${{ secrets.SIGNING_PASSWORD }}" >> $GITHUB_ENV
 
       - name: Set JReleaser secrets
