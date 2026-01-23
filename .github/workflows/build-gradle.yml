@@ -38,6 +38,11 @@ on:
         required: false
         type: boolean
         default: false
+      anthropic:
+        description: 'Enable Anthropic API secrets'
+        required: false
+        type: boolean
+        default: false
     secrets:
       env_secrets:
         description: 'Secret environment variables, one per line in KEY=value format'
@@ -86,6 +91,11 @@ jobs:
           echo "JRELEASER_BLUESKY_HOST=${{ vars.BLUESKY_HOST }}" >> $GITHUB_ENV
           echo "JRELEASER_BLUESKY_HANDLE=${{ vars.BLUESKY_HANDLE }}" >> $GITHUB_ENV
           echo "JRELEASER_BLUESKY_PASSWORD=${{ secrets.BLUESKY_PASSWORD }}" >> $GITHUB_ENV
+
+      - name: Set Anthropic secrets
+        if: inputs.anthropic
+        run: |
+          echo "ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}" >> $GITHUB_ENV
 
       - name: Build
         run: ./gradlew ${{ inputs.gradle_args }}
