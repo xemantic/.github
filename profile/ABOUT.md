@@ -65,9 +65,9 @@ Lines of code across all Xemantic open source projects:
 | CSS | 23 | 27265 |
 | Markdown | 115 | 14637 |
 | JavaScript | 43 | 6024 |
-| Gradle | 105 | 5995 |
+| Gradle | 105 | 5996 |
 | Java | 144 | 4803 |
-| YAML | 79 | 2303 |
+| YAML | 83 | 2343 |
 | Bourne Shell | 28 | 1876 |
 | SVG | 15 | 1594 |
 | JSON | 6 | 1291 |
@@ -78,7 +78,7 @@ Lines of code across all Xemantic open source projects:
 | Text | 16 | 441 |
 | TypeScript | 7 | 325 |
 | Properties | 57 | 309 |
-| HCL | 5 | 291 |
+| HCL | 5 | 294 |
 | Python | 7 | 262 |
 | Groovy | 2 | 203 |
 | Rust | 3 | 195 |
@@ -92,5 +92,5 @@ Lines of code across all Xemantic open source projects:
 | Bourne Again Shell | 1 | 30 |
 | Ruby | 1 | 21 |
 | MSBuild script | 1 | 7 |
-| **Total** | **1369** | **149418** |
+| **Total** | **1373** | **149462** |
 <!-- /loc -->
