@@ -28,11 +28,6 @@ on:
         required: false
         type: string
         default: ''
-      env_secrets:
-        description: 'Environment secrets, one per line in KEY=value format (caller interpolates secrets)'
-        required: false
-        type: string
-        default: ''
       maven_central:
         description: 'Enable Maven Central publishing secrets'
         required: false
@@ -43,6 +38,10 @@ on:
         required: false
         type: boolean
         default: false
+    secrets:
+      env_secrets:
+        description: 'Secret environment variables, one per line in KEY=value format'
+        required: false
 
 jobs:
   build:
@@ -65,9 +64,8 @@ jobs:
         if: inputs.env != ''
         run: echo "${{ inputs.env }}" >> $GITHUB_ENV
 
-      - name: Set environment secrets
-        if: inputs.env_secrets != ''
-        run: echo "${{ inputs.env_secrets }}" >> $GITHUB_ENV
+      - name: Set secret environment variables
+        run: echo "${{ secrets.env_secrets }}" >> $GITHUB_ENV
 
       - name: Set Maven Central secrets
         if: inputs.maven_central
