@@ -28,10 +28,16 @@ on:
         required: false
         type: string
         default: ''
-    secrets:
-      env_secrets:
-        description: 'Secret environment variables, one per line in KEY=value format'
+      maven_central:
+        description: 'Enable Maven Central publishing secrets'
         required: false
+        type: boolean
+        default: false
+      jreleaser:
+        description: 'Enable JReleaser announcement secrets'
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   build:
@@ -54,8 +60,23 @@ jobs:
         if: inputs.env != ''
         run: echo "${{ inputs.env }}" >> $GITHUB_ENV
 
-      - name: Set secret environment variables
-        run: echo "${{ secrets.env_secrets }}" >> $GITHUB_ENV
+      - name: Set Maven Central secrets
+        if: inputs.maven_central
+        run: |
+          echo "ORG_GRADLE_PROJECT_mavenCentralUsername=${{ secrets.MAVEN_CENTRAL_USERNAME }}" >> $GITHUB_ENV
+          echo "ORG_GRADLE_PROJECT_mavenCentralPassword=${{ secrets.MAVEN_CENTRAL_PASSWORD }}" >> $GITHUB_ENV
+          echo "ORG_GRADLE_PROJECT_signingInMemoryKey=${{ secrets.SIGNING_KEY }}" >> $GITHUB_ENV
+          echo "ORG_GRADLE_PROJECT_signingInMemoryKeyPassword=${{ secrets.SIGNING_PASSWORD }}" >> $GITHUB_ENV
+
+      - name: Set JReleaser secrets
+        if: inputs.jreleaser
+        run: |
+          echo "JRELEASER_DISCORD_WEBHOOK=${{ secrets.DISCORD_ANNOUNCEMENTS_WEBHOOK }}" >> $GITHUB_ENV
+          echo "JRELEASER_LINKEDIN_ACCESS_TOKEN=${{ secrets.LINKEDIN_ACCESS_TOKEN }}" >> $GITHUB_ENV
+          echo "JRELEASER_LINKEDIN_OWNER=${{ secrets.LINKEDIN_OWNER }}" >> $GITHUB_ENV
+          echo "JRELEASER_BLUESKY_HOST=${{ vars.BLUESKY_HOST }}" >> $GITHUB_ENV
+          echo "JRELEASER_BLUESKY_HANDLE=${{ vars.BLUESKY_HANDLE }}" >> $GITHUB_ENV
+          echo "JRELEASER_BLUESKY_PASSWORD=${{ secrets.BLUESKY_PASSWORD }}" >> $GITHUB_ENV
 
       - name: Build
         run: ./gradlew ${{ inputs.gradle_args }}
