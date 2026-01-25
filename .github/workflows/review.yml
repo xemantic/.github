@@ -7,5 +7,4 @@ on:
 jobs:
   claude-review:
     uses: xemantic/.github/.github/workflows/claude-code-review.yml@main
-    secrets:
-      inherit
+    secrets: inherit
