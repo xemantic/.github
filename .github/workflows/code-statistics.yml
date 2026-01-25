@@ -1,9 +1,6 @@
 name: Update Code Statistics
 
 on:
-  push:
-    branches:
-      - main
   schedule:
     - cron: "0 0 * * 0" # Runs weekly on Sunday at midnight (UTC)
   workflow_dispatch: # Allows manual trigger
@@ -28,11 +25,61 @@ jobs:
           chmod +x ./scripts/count-loc.sh ./scripts/update-stats.sh
           ./scripts/count-loc.sh | ./scripts/update-stats.sh
 
-      - name: Commit and Push
+      - name: Create or Update Pull Request
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_SECRET }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add profile/ABOUT.md
-          git commit -m "chore: update profile with latest code stats" || echo "No changes to commit"
-          git push origin HEAD
+          # Check if there are changes
+          if ! git diff --quiet profile/ABOUT.md; then
+            # Check for existing open PR with update-code-stats branch
+            EXISTING_PR=$(gh pr list --base main --state open --json number,headRefName \
+              --jq '.[] | select(.headRefName | startswith("update-code-stats-")) | .number' \
+              | head -n 1)
+
+            if [ -n "$EXISTING_PR" ]; then
+              # Update existing PR branch
+              BRANCH=$(gh pr view "$EXISTING_PR" --json headRefName --jq '.headRefName')
+              echo "Updating existing PR #$EXISTING_PR on branch $BRANCH"
+
+              # Save the new stats before switching branches
+              cp profile/ABOUT.md /tmp/ABOUT.md.new
+
+              # Checkout and reset to the remote branch state
+              git fetch origin "$BRANCH"
+              git checkout "$BRANCH"
+              git reset --hard "origin/$BRANCH"
+
+              # Restore the new stats
+              cp /tmp/ABOUT.md.new profile/ABOUT.md
+
+              git add profile/ABOUT.md
+              git commit -m "chore: update code statistics"
+              git push origin "$BRANCH"
+            else
+              # Create a new branch with timestamp
+              BRANCH="update-code-stats-$(date +%Y%m%d-%H%M%S)"
+              git checkout -b "$BRANCH"
+
+              # Commit changes
+              git add profile/ABOUT.md
+              git commit -m "chore: update code statistics"
+
+              # Push to remote
+              git push origin "$BRANCH"
+
+              # Create PR
+              if ! gh pr create \
+                --base main \
+                --head "$BRANCH" \
+                --title "chore: update code statistics" \
+                --body "Automated update of code statistics from weekly workflow run."; then
+                echo "::error::Failed to create PR. Branch $BRANCH has been pushed with the changes."
+                exit 1
+              fi
+            fi
+          else
+            echo "No changes to commit"
+          fi
