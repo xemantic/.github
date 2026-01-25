@@ -28,11 +28,33 @@ jobs:
           chmod +x ./scripts/count-loc.sh ./scripts/update-stats.sh
           ./scripts/count-loc.sh | ./scripts/update-stats.sh
 
-      - name: Commit and Push
+      - name: Create Pull Request
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_SECRET }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add profile/ABOUT.md
-          git commit -m "chore: update profile with latest code stats" || echo "No changes to commit"
-          git push origin HEAD
+          # Check if there are changes
+          if ! git diff --quiet profile/ABOUT.md; then
+            # Create a new branch with timestamp
+            BRANCH="update-code-stats-$(date +%Y%m%d-%H%M%S)"
+            git checkout -b "$BRANCH"
+
+            # Commit changes
+            git add profile/ABOUT.md
+            git commit -m "chore: update profile with latest code stats"
+
+            # Push to remote
+            git push origin "$BRANCH"
+
+            # Create PR (or update if one already exists)
+            gh pr create \
+              --base main \
+              --head "$BRANCH" \
+              --title "chore: update code statistics" \
+              --body "Automated update of code statistics from weekly workflow run." \
+              || echo "PR may already exist or creation failed"
+          else
+            echo "No changes to commit"
+          fi
