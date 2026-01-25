@@ -1,9 +1,6 @@
 name: Update Code Statistics
 
 on:
-  push:
-    branches:
-      - main
   schedule:
     - cron: "0 0 * * 0" # Runs weekly on Sunday at midnight (UTC)
   workflow_dispatch: # Allows manual trigger
