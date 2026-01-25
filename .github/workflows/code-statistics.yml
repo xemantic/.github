@@ -43,10 +43,20 @@ jobs:
               # Update existing PR branch
               BRANCH=$(gh pr view "$EXISTING_PR" --json headRefName --jq '.headRefName')
               echo "Updating existing PR #$EXISTING_PR on branch $BRANCH"
+
+              # Save the new stats before switching branches
+              cp profile/ABOUT.md /tmp/ABOUT.md.new
+
+              # Checkout and reset to the remote branch state
               git fetch origin "$BRANCH"
               git checkout "$BRANCH"
+              git reset --hard "origin/$BRANCH"
+
+              # Restore the new stats
+              cp /tmp/ABOUT.md.new profile/ABOUT.md
+
               git add profile/ABOUT.md
-              git commit -m "chore: update profile with latest code stats"
+              git commit -m "chore: update code statistics"
               git push origin "$BRANCH"
             else
               # Create a new branch with timestamp
@@ -55,17 +65,20 @@ jobs:
 
               # Commit changes
               git add profile/ABOUT.md
-              git commit -m "chore: update profile with latest code stats"
+              git commit -m "chore: update code statistics"
 
               # Push to remote
               git push origin "$BRANCH"
 
               # Create PR
-              gh pr create \
+              if ! gh pr create \
                 --base main \
                 --head "$BRANCH" \
                 --title "chore: update code statistics" \
-                --body "Automated update of code statistics from weekly workflow run."
+                --body "Automated update of code statistics from weekly workflow run."; then
+                echo "::error::Failed to create PR. Branch $BRANCH has been pushed with the changes."
+                exit 1
+              fi
             fi
           else
             echo "No changes to commit"
