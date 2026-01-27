@@ -60,7 +60,7 @@ Updates code statistics in `profile/ABOUT.md`. Runs:
 
 Clones all public non-fork repositories, counts lines of code using `cloc`, and updates the statistics table between `<!-- loc -->` markers.
 
-**Languages tracked:** Kotlin, Java, JavaScript, TypeScript, JSX, Vue, PHP, C#
+Languages are automatically detected by `cloc`.
 
 ### Action Version Updater (`action-version-updater.yml`)
 
