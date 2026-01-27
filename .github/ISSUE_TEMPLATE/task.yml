@@ -1,0 +1,52 @@
+name: Task
+description: Create a task for implementation, bug fix, or improvement
+title: "[Task]: "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for creating a task! Please provide clear information to help both AI agents and humans understand what needs to be done.
+
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objective
+      description: What needs to be accomplished? Be specific and concise.
+      placeholder: |
+        Example: Add dark mode toggle to user settings
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Any relevant background, constraints, or related information
+      placeholder: |
+        Example: The app currently only supports light mode. Users have requested dark mode in issue #123.
+    validations:
+      required: false
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      description: How will we know this task is complete? List specific, testable criteria.
+      placeholder: |
+        - [ ] Dark mode toggle is visible in settings
+        - [ ] Toggling switches between light and dark themes
+        - [ ] Theme preference persists across sessions
+        - [ ] All components render correctly in both modes
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Information
+      description: Any other details, references, or notes
+      placeholder: |
+        Links to designs, related issues, documentation, etc.
+    validations:
+      required: false
