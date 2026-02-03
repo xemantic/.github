@@ -4,7 +4,7 @@ name: GitHub Actions Version Updater
 on:
   schedule:
     # Automatically run on every Sunday
-    - cron: '0 0 * * 0'
+    - cron: '0 0 * * *'  # New: daily at midnight UTC
   workflow_dispatch:
 
 jobs:
