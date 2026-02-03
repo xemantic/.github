@@ -63,11 +63,11 @@ Lines of code across all Xemantic open source projects:
 | Kotlin | 411 | 41135 |
 | HTML | 172 | 36436 |
 | CSS | 23 | 27265 |
-| Markdown | 115 | 14637 |
+| Markdown | 116 | 14684 |
 | JavaScript | 43 | 6024 |
 | Gradle | 105 | 5973 |
 | Java | 144 | 4803 |
-| YAML | 80 | 2166 |
+| YAML | 78 | 2131 |
 | Bourne Shell | 28 | 1876 |
 | SVG | 15 | 1594 |
 | JSON | 6 | 1291 |
@@ -92,5 +92,5 @@ Lines of code across all Xemantic open source projects:
 | Bourne Again Shell | 1 | 30 |
 | Ruby | 1 | 21 |
 | MSBuild script | 1 | 7 |
-| **Total** | **1372** | **149429** |
+| **Total** | **1371** | **149441** |
 <!-- /loc -->
