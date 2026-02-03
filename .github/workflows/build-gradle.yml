@@ -43,6 +43,16 @@ on:
         required: false
         type: boolean
         default: false
+      artifact_path:
+        description: 'Path to build artifact(s) to upload (glob pattern supported)'
+        required: false
+        type: string
+        default: ''
+      artifact_name:
+        description: 'Name for the uploaded artifact'
+        required: false
+        type: string
+        default: 'build-artifact'
     secrets:
       env_secrets:
         description: 'Secret environment variables, one per line in KEY=value format'
@@ -63,7 +73,7 @@ jobs:
           java-version: ${{ inputs.java_version || vars.DEFAULT_JAVA_VERSION }}
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v5.0.1
+        uses: gradle/actions/setup-gradle@v5.0.0
 
       - name: Set environment variables
         if: inputs.env != ''
@@ -99,3 +109,10 @@ jobs:
 
       - name: Build
         run: ./gradlew ${{ inputs.gradle_args }}
+
+      - name: Upload build artifact
+        if: inputs.artifact_path != ''
+        uses: actions/upload-artifact@v6.0.0
+        with:
+          name: ${{ inputs.artifact_name }}
+          path: ${{ inputs.artifact_path }}
