@@ -20,6 +20,9 @@ cat > "$TABLE_FILE"
 # Extract total stars count embedded by count-loc.sh
 TOTAL_STARS=$(grep '<!-- total-stars:' "$TABLE_FILE" | sed 's/.*<!-- total-stars: \([0-9]*\) -->.*/\1/' || true)
 
+# Extract total lines of code from the Total row
+TOTAL_LOC=$(grep '\*\*Total\*\*' "$TABLE_FILE" | sed 's/.*| \*\*[0-9]*\*\* | \*\*\([0-9]*\)\*\* |.*/\1/' || true)
+
 # Remove stars line from table so only the LOC table remains
 grep -v '<!-- total-stars:' "$TABLE_FILE" > "$TABLE_FILE.clean"
 mv "$TABLE_FILE.clean" "$TABLE_FILE"
@@ -73,3 +76,18 @@ for FILE in "${FILES[@]}"; do
 done
 
 rm -f "$TABLE_FILE"
+
+# Update <!-- stats --> sections (compact summary for profile README)
+if [[ -n "$TOTAL_STARS" ]] && [[ -n "$TOTAL_LOC" ]]; then
+  for FILE in "$PROFILE_DIR/README.md" "$PROFILE_DIR/ABOUT.md"; do
+    if [[ -f "$FILE" ]] && grep -q "<!-- stats -->" "$FILE"; then
+      {
+        sed -n '1,/<!-- stats -->/p' "$FILE"
+        echo "⭐ **$TOTAL_STARS** GitHub stars · 💻 **$TOTAL_LOC** lines of code"
+        sed -n '/<!-- \/stats -->/,$p' "$FILE"
+      } > "$FILE.tmp"
+      mv "$FILE.tmp" "$FILE"
+      echo "Updated $FILE (stats section)"
+    fi
+  done
+fi
