@@ -17,6 +17,13 @@ FILES=(
 TABLE_FILE=$(mktemp)
 cat > "$TABLE_FILE"
 
+# Extract total stars count embedded by count-loc.sh
+TOTAL_STARS=$(grep '<!-- total-stars:' "$TABLE_FILE" | sed 's/.*<!-- total-stars: \([0-9]*\) -->.*/\1/' || true)
+
+# Remove stars line from table so only the LOC table remains
+grep -v '<!-- total-stars:' "$TABLE_FILE" > "$TABLE_FILE.clean"
+mv "$TABLE_FILE.clean" "$TABLE_FILE"
+
 for FILE in "${FILES[@]}"; do
   if [[ ! -f "$FILE" ]]; then
     echo "Warning: $FILE not found, skipping" >&2
@@ -45,7 +52,24 @@ for FILE in "${FILES[@]}"; do
   } > "$FILE.tmp"
 
   mv "$FILE.tmp" "$FILE"
-  echo "Updated $FILE"
+  echo "Updated $FILE (LOC section)"
+
+  # Update stars section if marker exists and total stars was found
+  if [[ -n "$TOTAL_STARS" ]] && grep -q "<!-- stars -->" "$FILE"; then
+    {
+      # Part 1: up to and including start marker
+      sed -n '1,/<!-- stars -->/p' "$FILE"
+
+      # Part 2: the stars count
+      echo "Stars across all Xemantic open source repositories: **$TOTAL_STARS**"
+
+      # Part 3: end marker and everything after
+      sed -n '/<!-- \/stars -->/,$p' "$FILE"
+    } > "$FILE.tmp"
+
+    mv "$FILE.tmp" "$FILE"
+    echo "Updated $FILE (stars section)"
+  fi
 done
 
 rm -f "$TABLE_FILE"

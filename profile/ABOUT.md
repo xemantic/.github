@@ -55,6 +55,10 @@ If you like what we do, or if you are using our open source software, please con
 
 ## Code Statistics
 
+<!-- stars -->
+Stars across all Xemantic open source repositories: **4987**
+<!-- /stars -->
+
 Lines of code across all Xemantic open source projects:
 
 <!-- loc -->
