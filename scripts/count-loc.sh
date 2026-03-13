@@ -20,7 +20,7 @@ for cmd in gh jq cloc git; do
 done
 
 echo "Fetching repositories for $ORG..." >&2
-REPOS=$(gh repo list "$ORG" --no-archived --source --visibility public --json name,defaultBranchRef --limit 1000)
+REPOS=$(gh repo list "$ORG" --no-archived --source --visibility public --json name,defaultBranchRef,stargazerCount --limit 1000)
 
 if [[ -z "$REPOS" || "$REPOS" == "[]" ]]; then
   echo "Error: No repositories found or not authenticated" >&2
@@ -56,3 +56,6 @@ echo "$CLOC_JSON" | jq -r '
 TOTAL_FILES=$(echo "$CLOC_JSON" | jq '.SUM.nFiles // 0')
 TOTAL_CODE=$(echo "$CLOC_JSON" | jq '.SUM.code // 0')
 echo "| **Total** | **$TOTAL_FILES** | **$TOTAL_CODE** |"
+
+TOTAL_STARS=$(echo "$REPOS" | jq '[.[].stargazerCount] | add // 0')
+echo "<!-- total-stars: $TOTAL_STARS -->"
