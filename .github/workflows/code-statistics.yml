@@ -33,7 +33,7 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
           # Check if there are changes
-          if ! git diff --quiet profile/ABOUT.md; then
+          if ! git diff --quiet profile/ABOUT.md || ! git diff --quiet profile/README.md; then
             # Check for existing open PR with update-code-stats branch
             EXISTING_PR=$(gh pr list --base main --state open --json number,headRefName \
               --jq '.[] | select(.headRefName | startswith("update-code-stats-")) | .number' \
@@ -46,6 +46,7 @@ jobs:
 
               # Save the new stats before switching branches
               cp profile/ABOUT.md /tmp/ABOUT.md.new
+              cp profile/README.md /tmp/README.md.new
 
               # Checkout and reset to the remote branch state
               git fetch origin "$BRANCH"
@@ -54,8 +55,9 @@ jobs:
 
               # Restore the new stats
               cp /tmp/ABOUT.md.new profile/ABOUT.md
+              cp /tmp/README.md.new profile/README.md
 
-              git add profile/ABOUT.md
+              git add profile/ABOUT.md profile/README.md
               git commit -m "chore: update code statistics"
               git push origin "$BRANCH"
             else
@@ -64,7 +66,7 @@ jobs:
               git checkout -b "$BRANCH"
 
               # Commit changes
-              git add profile/ABOUT.md
+              git add profile/ABOUT.md profile/README.md
               git commit -m "chore: update code statistics"
 
               # Push to remote
