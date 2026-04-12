@@ -64,10 +64,10 @@ Lines of code across all Xemantic open source projects:
 <!-- loc -->
 | Language | Files | Lines of Code |
 |----------|------:|--------------:|
-| Kotlin | 585 | 110115 |
+| Kotlin | 586 | 112620 |
 | HTML | 176 | 36917 |
 | CSS | 26 | 27934 |
-| Markdown | 142 | 21745 |
+| Markdown | 142 | 22461 |
 | Gradle | 132 | 7262 |
 | JavaScript | 46 | 6397 |
 | Java | 144 | 4803 |
@@ -97,5 +97,5 @@ Lines of code across all Xemantic open source projects:
 | Ruby | 1 | 21 |
 | Dockerfile | 1 | 7 |
 | MSBuild script | 1 | 7 |
-| **Total** | **1638** | **228747** |
+| **Total** | **1639** | **231968** |
 <!-- /loc -->
