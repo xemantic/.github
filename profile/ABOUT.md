@@ -56,7 +56,7 @@ If you like what we do, or if you are using our open source software, please con
 ## Code Statistics
 
 <!-- stars -->
-Stars across all Xemantic open source repositories: **796**
+Stars across all Xemantic open source repositories: **798**
 <!-- /stars -->
 
 Lines of code across all Xemantic open source projects:
@@ -64,15 +64,15 @@ Lines of code across all Xemantic open source projects:
 <!-- loc -->
 | Language | Files | Lines of Code |
 |----------|------:|--------------:|
-| Kotlin | 588 | 119411 |
+| Kotlin | 589 | 122966 |
 | HTML | 176 | 36917 |
 | CSS | 26 | 27934 |
-| Markdown | 146 | 23638 |
+| Markdown | 146 | 24060 |
 | Gradle | 132 | 7262 |
 | JavaScript | 46 | 6397 |
 | Java | 144 | 4803 |
 | YAML | 83 | 2138 |
-| Bourne Shell | 28 | 1904 |
+| Bourne Shell | 29 | 1947 |
 | SVG | 16 | 1613 |
 | JSON | 6 | 1291 |
 | Maven | 18 | 1190 |
@@ -80,7 +80,7 @@ Lines of code across all Xemantic open source projects:
 | TOML | 31 | 935 |
 | XML | 61 | 794 |
 | Text | 16 | 441 |
-| Python | 8 | 405 |
+| Python | 8 | 406 |
 | Properties | 68 | 382 |
 | TypeScript | 7 | 325 |
 | HCL | 5 | 294 |
@@ -97,5 +97,5 @@ Lines of code across all Xemantic open source projects:
 | Ruby | 1 | 21 |
 | Dockerfile | 1 | 7 |
 | MSBuild script | 1 | 7 |
-| **Total** | **1646** | **240079** |
+| **Total** | **1648** | **244100** |
 <!-- /loc -->
