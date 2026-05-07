@@ -43,6 +43,11 @@ on:
         required: false
         type: boolean
         default: false
+      moonshot:
+        description: 'Enable Moonshot API secrets'
+        required: false
+        type: boolean
+        default: false
       artifact_path:
         description: 'Path to build artifact(s) to upload (glob pattern supported)'
         required: false
@@ -106,6 +111,13 @@ jobs:
         if: inputs.anthropic
         run: |
           echo "ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}" >> $GITHUB_ENV
+
+      - name: Set Moonshot secrets
+        if: inputs.moonshot
+        run: |
+          echo "MOONSHOT_API_BASE_URL=${{ vars.MOONSHOT_API_BASE_URL }}" >> $GITHUB_ENV
+          echo "MOONSHOT_DEFAULT_MODEL=${{ vars.MOONSHOT_DEFAULT_MODEL }}" >> $GITHUB_ENV
+          echo "MOONSHOT_API_KEY=${{ secrets.MOONSHOT_API_KEY }}" >> $GITHUB_ENV
 
       - name: Build
         run: ./gradlew ${{ inputs.gradle_args }}
