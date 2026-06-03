@@ -69,7 +69,7 @@ jobs:
 
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@v6.0.3
 
       - name: Setup Java
         uses: actions/setup-java@v5.2.0
