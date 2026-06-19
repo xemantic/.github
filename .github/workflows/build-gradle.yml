@@ -69,10 +69,10 @@ jobs:
 
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v6.0.3
+        uses: actions/checkout@v7.0.0
 
       - name: Setup Java
-        uses: actions/setup-java@v5.2.0
+        uses: actions/setup-java@v5.3.0
         with:
           distribution: ${{ inputs.java_distribution || vars.DEFAULT_JAVA_DISTRIBUTION }}
           java-version: ${{ inputs.java_version || vars.DEFAULT_JAVA_VERSION }}
