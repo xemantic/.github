@@ -1,51 +1,47 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file captures only what cannot be inferred from the codebase itself.
 
-## Repository Purpose
+## Rules for editing this file
 
-This is the `.github` special repository for the Xemantic GitHub organization. It serves multiple purposes:
+Both developers and AI agents are expected to add entries as they encounter surprises.
 
-1. **Organization Profile**: The `profile/README.md` file is displayed on the organization's GitHub page (github.com/xemantic)
-2. **Reusable Workflows**: Shared GitHub Actions workflows used across all Xemantic repositories
-3. **Code Statistics Automation**: A workflow that counts lines of code across all Xemantic repositories
+- **Add an entry** when you encounter something unexpected: a build quirk, a non-obvious constraint, a dependency gotcha, or any behavior that would surprise the next agent or developer.
+- **Add an entry** when a developer flags an anti-pattern produced by AI — describe the anti-pattern and the preferred alternative.
+- **Do not** add codebase overviews, directory listings, or anything discoverable by reading the source.
+- Keep entries concise: one line per lesson, grouped under a heading if a theme emerges.
 
-## Repository Structure
+## Conventions
 
-- `profile/README.md` - Organization profile displayed on GitHub
-- `profile/ABOUT.md` - Detailed about page with code statistics
-- `README.md` - Repository documentation
-- `.github/workflows/` - Reusable workflow templates
-  - `claude-code.yml` - Claude Code integration for issues and PRs
-  - `claude-code-review.yml` - Automated Claude PR code reviews
-  - `build-gradle.yml` - Reusable Gradle build workflow
-  - `code-statistics.yml` - LOC counting workflow
-  - `action-version-updater.yml` - Keeps action versions current
-- `scripts/count-loc.sh` - Script that clones repos and counts lines of code
-- `scripts/update-stats.sh` - Script that updates profile ABOUT.md with statistics
+### Markdown authoring
 
-## Reusable Workflows
+Markdown files use [semantic line breaks](https://sembr.org/):
+break a line after a sentence,
+and optionally at clause boundaries within a long sentence,
+so that diffs stay meaningful and reviewable.
 
-### Claude Code (`claude-code.yml`)
-Responds to `@claude` mentions in issues and PRs. Grants write permissions for contents, PRs, and issues so Claude can make changes.
+There is no column width limit —
+never reflow or hard-wrap a paragraph to fit some character count.
 
-### Claude Code Review (`claude-code-review.yml`)
-Automated PR reviews triggered on pull requests. Reviews code quality, bugs, performance, security, and test coverage.
+`CODE_OF_CONDUCT.md` and `CLA.md` are exempt.
+They are kept diffable against their upstream or original wording,
+so their existing line structure must be preserved rather than reflowed.
 
-### Build Gradle (`build-gradle.yml`)
-Configurable Gradle build with support for:
-- Custom Gradle arguments and Java version
-- Maven Central publishing
-- JReleaser announcements
-- Anthropic API integration
+## Known gotchas
 
-### Code Statistics (`code-statistics.yml`)
-- Runs weekly on Sundays at midnight UTC, on push to main, or via manual trigger
-- Clones all non-fork public repos from the xemantic organization
-- Uses `cloc` to count lines of code
-- Updates `profile/ABOUT.md` between `<!-- loc -->` and `<!-- /loc -->` markers
+- `main` is protected by a repository *ruleset*, not classic branch protection,
+  so `gh api repos/xemantic/.github/branches/main/protection` reports `Branch not protected` while direct pushes still fail —
+  automation must open a pull request instead, which is why `code-statistics.yml` calls `gh pr create`.
+- The reusable workflows here are called from roughly a dozen other repositories in the organization,
+  so renaming an input, secret, or job is a breaking change outside this repo —
+  search the org for `xemantic/.github/.github/workflows` before changing one.
+- The region between the `<!-- loc -->` markers in `profile/ABOUT.md` is regenerated weekly by `code-statistics.yml`; hand-edits there are overwritten.
+- `profile/README.md` renders publicly on github.com/xemantic, so edits are immediately visible org-wide rather than scoped to this repository.
 
-## Secrets Required
+## Anti-patterns to avoid
 
-- `WORKFLOW_SECRET` - For fetching organization repositories and pushing updates
-- `CLAUDE_CODE_OAUTH_TOKEN` - For Claude Code integration workflows
+- Do not add content to this file that is already discoverable by reading the source or build scripts — that inflates context without adding signal, reducing AI agent task success rates (see [arxiv 2602.11988](https://arxiv.org/abs/2602.11988)).
+- Do not reword `CODE_OF_CONDUCT.md`.
+  It is adapted from Contributor Covenant 3.0 and deliberately kept close to upstream,
+  so prose "improvements" create silent divergence — the few deviations that exist are intentional.
+- Do not lowercase `You` / `Your` in `CLA.md` — they are defined terms introduced in section 1, not typos.
