@@ -1,90 +1,124 @@
 # Xemantic .github Repository
 
 This is the special `.github` repository for the [Xemantic](https://github.com/xemantic) GitHub organization.
+It supplies the public organization profile, the contributor documents that apply to every Xemantic project,
+and the reusable GitHub Actions workflows that the other repositories call.
 
 ## Contents
 
+### Organization profile
+
+- [profile/README.md](profile/README.md) — rendered publicly on [github.com/xemantic](https://github.com/xemantic)
+- [profile/ABOUT.md](profile/ABOUT.md) — about page; the region between the `<!-- loc -->` markers is generated, see [Code statistics](#code-statistics)
+
+### Contributor documents
+
+These apply to every repository in the organization, not just this one.
+
+- [CONTRIBUTING.md](CONTRIBUTING.md) — how to contribute
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) — adapted from [Contributor Covenant 3.0](https://www.contributor-covenant.org/version/3/0/)
+- [CLA.md](CLA.md) — Individual Contributor License Agreement, signed via [CLA Assistant](https://cla-assistant.io/)
+
+### Reusable workflows
+
+Called from other repositories — see [Using the reusable workflows](#using-the-reusable-workflows).
+
+- [build-gradle.yml](.github/workflows/build-gradle.yml) — configurable Gradle build, publishing and release
+- [claude-code.yml](.github/workflows/claude-code.yml) — responds to `@claude` mentions in issues and pull requests
+- [claude-code-review.yml](.github/workflows/claude-code-review.yml) — automated Claude review of pull requests
+
+### Workflows local to this repository
+
+- [code-statistics.yml](.github/workflows/code-statistics.yml) — updates the statistics in `profile/ABOUT.md`
+- [action-version-updater.yml](.github/workflows/action-version-updater.yml) — keeps action versions current
+- [claude.yml](.github/workflows/claude.yml) — applies `claude-code.yml` to this repository
+- [review.yml](.github/workflows/review.yml) — applies `claude-code-review.yml` to this repository
+
+The last two are the smallest working examples of calling the reusable workflows.
+
+### Scripts
+
+- [scripts/count-loc.sh](scripts/count-loc.sh) — clones the organization's repositories and counts lines of code
+- [scripts/update-stats.sh](scripts/update-stats.sh) — writes those counts into `profile/ABOUT.md`
+
+## Using the reusable workflows
+
+Reference them by path and ref, and pass `secrets: inherit`:
+
+```yaml
+jobs:
+  build:
+    uses: xemantic/.github/.github/workflows/build-gradle.yml@main
+    secrets: inherit
+    with:
+      gradle_args: build
 ```
-.github/
-├── .github/workflows/
-│   ├── action-version-updater.yml  # Keeps GitHub Action versions up to date
-│   ├── build-gradle.yml            # Reusable Gradle build workflow
-│   ├── claude-code-review.yml      # Reusable Claude Code PR review workflow
-│   ├── claude-code.yml             # Reusable Claude Code integration workflow
-│   ├── claude.yml                  # This repo's Claude Code workflow
-│   ├── code-statistics.yml         # Updates code stats in profile ABOUT.md
-│   └── review.yml                  # This repo's Claude Code review workflow
-├── profile/
-│   ├── README.md            # Organization profile displayed on github.com/xemantic
-│   └── ABOUT.md             # Detailed about page with code statistics
-├── scripts/
-│   ├── count-loc.sh         # Clones repos and counts lines of code
-│   └── update-stats.sh      # Updates profile ABOUT.md with statistics
-└── README.md                # This file
-```
 
-## Workflows
+`secrets: inherit` is required rather than optional.
+`build-gradle.yml` reads publishing, signing and announcement secrets directly from the calling repository's context
+instead of declaring them as workflow inputs,
+so without `inherit` they resolve to empty strings and the build fails late, during publication.
 
-This repository contains both local workflows (for this repository) and reusable workflows (templates for other Xemantic repositories).
+### Build Gradle
 
-### Local Workflows
+| Input | Required | Default | Purpose |
+| --- | --- | --- | --- |
+| `gradle_args` | yes | — | Arguments passed to `./gradlew`, for example `build` or `build publishToMavenCentral` |
+| `java_distribution` | no | org variable `DEFAULT_JAVA_DISTRIBUTION` | Java distribution |
+| `java_version` | no | org variable `DEFAULT_JAVA_VERSION` | Java version |
+| `runs_on` | no | `ubuntu-latest` | Runner |
+| `env` | no | — | Plain environment variables, one `KEY=value` per line |
+| `maven_central` | no | `false` | Supply Maven Central credentials and signing key |
+| `jreleaser` | no | `false` | Supply JReleaser announcement credentials |
+| `anthropic` | no | `false` | Supply `ANTHROPIC_API_KEY` |
 
-#### Claude Code (`claude.yml`)
+The single declared secret is `env_secrets`, taking secret environment variables as `KEY=value` lines.
+The boolean inputs above gate additional secrets that are read from the caller's context:
 
-Responds to `@claude` mentions in this repository's issues and PR comments. Uses the reusable `claude-code.yml` workflow.
+- `maven_central` — `MAVEN_CENTRAL_USERNAME`, `MAVEN_CENTRAL_PASSWORD`, `SIGNING_KEY`, `SIGNING_PASSWORD`
+- `jreleaser` — `DISCORD_ANNOUNCEMENTS_WEBHOOK`, `LINKEDIN_ACCESS_TOKEN`, `LINKEDIN_OWNER`, `BLUESKY_PASSWORD`, and the `BLUESKY_HOST` and `BLUESKY_HANDLE` variables
+- `anthropic` — `ANTHROPIC_API_KEY`
 
-#### Claude Code Review (`review.yml`)
+The workflow file is authoritative; consult it when in doubt.
 
-Automatically reviews pull requests in this repository. Uses the reusable `claude-code-review.yml` workflow.
+### Claude Code
 
-### Reusable Workflows
+Requires the `CLAUDE_CODE_OAUTH_TOKEN` secret.
+The calling workflow supplies the triggers, and the job runs only when the comment, issue title or issue body contains `@claude`.
+See [claude.yml](.github/workflows/claude.yml) for the triggers this repository uses.
 
-#### Claude Code (`claude-code.yml`)
+### Claude Code Review
 
-Reusable workflow for Claude Code integration. Responds to `@claude` mentions in:
-- Issue comments
-- PR comments and reviews
-- Issue titles and bodies
+Requires the `CLAUDE_CODE_OAUTH_TOKEN` secret.
+Reviews pull requests for code quality, bugs, performance, security and test coverage,
+using the calling repository's `CLAUDE.md` for conventions, and posts the review as a pull request comment.
+See [review.yml](.github/workflows/review.yml).
 
-**Required secrets:** `CLAUDE_CODE_OAUTH_TOKEN`
+## Repository automation
 
-#### Claude Code Review (`claude-code-review.yml`)
+### Code statistics
 
-Reusable workflow for automated PR code reviews by Claude. Reviews PRs for:
-- Code quality and best practices
-- Potential bugs or issues
-- Performance and security concerns
-- Test coverage
+[code-statistics.yml](.github/workflows/code-statistics.yml) runs weekly on Sundays at midnight UTC, or on manual trigger.
+It clones every public non-fork repository in the organization,
+counts lines of code with `cloc`, which detects languages automatically,
+and rewrites the table between the `<!-- loc -->` markers in `profile/ABOUT.md`.
 
-**Required secrets:** `CLAUDE_CODE_OAUTH_TOKEN`
+Because `main` is protected, the workflow opens or updates a pull request rather than pushing directly.
+Hand-edits inside the markers are overwritten on the next run.
 
-#### Build Gradle (`build-gradle.yml`)
+### Action version updater
 
-Reusable Gradle build workflow with configurable options:
-- Custom Gradle arguments
-- Java distribution and version selection
-- Maven Central publishing support
-- JReleaser announcement integration
-- Anthropic API key injection
+[action-version-updater.yml](.github/workflows/action-version-updater.yml) runs weekly on Sundays, or on manual trigger,
+and raises updates for outdated action versions.
 
-#### Code Statistics (`code-statistics.yml`)
+## Secrets and variables
 
-Updates code statistics in `profile/ABOUT.md`. Runs:
-- Weekly on Sundays at midnight UTC
-- On push to main branch
-- Via manual trigger
+| Name | Kind | Used by |
+| --- | --- | --- |
+| `WORKFLOW_SECRET` | secret | `code-statistics.yml` and `action-version-updater.yml`; needs the `workflow` scope, and permission to open pull requests |
+| `CLAUDE_CODE_OAUTH_TOKEN` | secret | `claude-code.yml` and `claude-code-review.yml` |
+| `DEFAULT_JAVA_DISTRIBUTION` | variable | `build-gradle.yml`, when `java_distribution` is omitted |
+| `DEFAULT_JAVA_VERSION` | variable | `build-gradle.yml`, when `java_version` is omitted |
 
-Clones all public non-fork repositories, counts lines of code using `cloc`, and updates the statistics table between `<!-- loc -->` markers.
-
-Languages are automatically detected by `cloc`.
-
-#### Action Version Updater (`action-version-updater.yml`)
-
-Automatically updates GitHub Action versions. Runs weekly on Sundays.
-
-**Required secrets:** `WORKFLOW_SECRET`
-
-## Secrets Required
-
-- `WORKFLOW_SECRET` - For fetching organization repositories and pushing updates
-- `CLAUDE_CODE_OAUTH_TOKEN` - For Claude Code integration workflows
+Repositories calling `build-gradle.yml` with `maven_central`, `jreleaser` or `anthropic` enabled
+additionally need the secrets listed under [Build Gradle](#build-gradle).
