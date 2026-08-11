@@ -1,10 +1,14 @@
 # Contributing to Xemantic Projects
 
-Thank you for your interest in contributing to Xemantic! We build humanistic code for the betterment of society — contributions that share this mission are very welcome.
+Thank you for your interest in contributing to Xemantic!
+We build humanistic code for the betterment of society —
+contributions that share this mission are very welcome.
 
 ## Contributor License Agreement (CLA)
 
-Before we can accept your contribution, you must sign our Contributor License Agreement. This is a one-time requirement covering all Xemantic projects — sign once, contribute everywhere. It protects both you and the project.
+Before we can accept your contribution, you must sign our Contributor License Agreement.
+This is a one-time requirement covering all Xemantic projects — sign once, contribute everywhere.
+It protects both you and the project.
 
 **Why a CLA?**
 
@@ -13,7 +17,8 @@ Before we can accept your contribution, you must sign our Contributor License Ag
 - Protects the project's ability to be distributed under its chosen license
 - Provides legal clarity for all parties
 
-When you open your first pull request, the [CLA Assistant](https://cla-assistant.io/) will automatically ask you to sign the CLA. The process is simple:
+When you open your first pull request, the [CLA Assistant](https://cla-assistant.io/) will automatically ask you to sign the CLA.
+The process is simple:
 
 1. Open a pull request
 2. CLA Assistant will comment with a link
@@ -60,4 +65,8 @@ All contributors are expected to follow our [Code of Conduct](https://github.com
 
 Your contributions are distributed to users under the license of the project you contribute to — see that repository's `LICENSE` file.
 
-Separately, by signing the [CLA](https://github.com/xemantic/.github/blob/main/CLA.md) you grant the Maintainer the rights described there, which are broader than the project's license alone: a sublicensable copyright license, a patent license, and the ability to include your contribution in differently-licensed versions of the project in the future. The license under which the project is distributed at the time of your contribution always remains available as an option for that contribution.
+Separately, by signing the [CLA](https://github.com/xemantic/.github/blob/main/CLA.md) you grant the Maintainer the rights described there,
+which are broader than the project's license alone:
+a sublicensable copyright license, a patent license,
+and the ability to include your contribution in differently-licensed versions of the project in the future.
+The license under which the project is distributed at the time of your contribution always remains available as an option for that contribution.

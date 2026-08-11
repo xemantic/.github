@@ -71,6 +71,9 @@ so without `inherit` they resolve to empty strings and the build fails late, dur
 | `maven_central` | no | `false` | Supply Maven Central credentials and signing key |
 | `jreleaser` | no | `false` | Supply JReleaser announcement credentials |
 | `anthropic` | no | `false` | Supply `ANTHROPIC_API_KEY` |
+| `moonshot` | no | `false` | Supply Moonshot API credentials |
+| `artifact_path` | no | — | Glob of build artifact(s) to upload; nothing is uploaded when empty |
+| `artifact_name` | no | `build-artifact` | Name of the uploaded artifact |
 
 The single declared secret is `env_secrets`, taking secret environment variables as `KEY=value` lines.
 The boolean inputs above gate additional secrets that are read from the caller's context:
@@ -78,6 +81,7 @@ The boolean inputs above gate additional secrets that are read from the caller's
 - `maven_central` — `MAVEN_CENTRAL_USERNAME`, `MAVEN_CENTRAL_PASSWORD`, `SIGNING_KEY`, `SIGNING_PASSWORD`
 - `jreleaser` — `DISCORD_ANNOUNCEMENTS_WEBHOOK`, `LINKEDIN_ACCESS_TOKEN`, `LINKEDIN_OWNER`, `BLUESKY_PASSWORD`, and the `BLUESKY_HOST` and `BLUESKY_HANDLE` variables
 - `anthropic` — `ANTHROPIC_API_KEY`
+- `moonshot` — `MOONSHOT_API_KEY`, and the `MOONSHOT_API_BASE_URL` and `MOONSHOT_DEFAULT_MODEL` variables
 
 The workflow file is authoritative; consult it when in doubt.
 
@@ -108,7 +112,7 @@ Hand-edits inside the markers are overwritten on the next run.
 
 ### Action version updater
 
-[action-version-updater.yml](.github/workflows/action-version-updater.yml) runs weekly on Sundays, or on manual trigger,
+[action-version-updater.yml](.github/workflows/action-version-updater.yml) runs daily at midnight UTC, or on manual trigger,
 and raises updates for outdated action versions.
 
 ## Secrets and variables
@@ -120,5 +124,5 @@ and raises updates for outdated action versions.
 | `DEFAULT_JAVA_DISTRIBUTION` | variable | `build-gradle.yml`, when `java_distribution` is omitted |
 | `DEFAULT_JAVA_VERSION` | variable | `build-gradle.yml`, when `java_version` is omitted |
 
-Repositories calling `build-gradle.yml` with `maven_central`, `jreleaser` or `anthropic` enabled
-additionally need the secrets listed under [Build Gradle](#build-gradle).
+Repositories calling `build-gradle.yml` with `maven_central`, `jreleaser`, `anthropic` or `moonshot` enabled
+additionally need the secrets and variables listed under [Build Gradle](#build-gradle).
