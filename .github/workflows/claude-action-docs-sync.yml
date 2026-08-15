@@ -7,6 +7,10 @@ on:
     - cron: '0 6 * * *'  # daily at 06:00 UTC
   workflow_dispatch:
 
+# Prevents a manual dispatch racing a same-day scheduled run for the same proposal branch.
+concurrency:
+  group: claude-action-docs-sync
+
 jobs:
   sync:
     runs-on: ubuntu-latest
@@ -48,6 +52,7 @@ jobs:
                - .github/workflows/claude-code-review.yml (reusable, invoked by review.yml)
                - .github/workflows/claude.yml
                - .github/workflows/review.yml
+               - .github/workflows/claude-action-docs-sync.yml (this workflow itself)
 
             3. Constraints (see also CLAUDE.md):
                - The reusable workflows are called from other repositories in the xemantic
@@ -79,4 +84,7 @@ jobs:
 
           # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
           # or https://code.claude.com/docs/en/cli-reference for available options
-          claude_args: '--allowed-tools "Bash,WebFetch,WebSearch"'
+          # Bash is scoped to the exact commands the task needs — this job runs unattended
+          # with a workflow-scoped token while reading external content, so unrestricted
+          # Bash would be an unnecessary attack surface.
+          claude_args: '--allowed-tools "Bash(git:*),Bash(gh pr list:*),Bash(gh pr create:*),Bash(date:*),WebFetch,WebSearch"'
