@@ -17,6 +17,8 @@ jobs:
     timeout-minutes: 30
     permissions:
       contents: read
+      # Required by claude-code-action, which fetches a GitHub OIDC token
+      # for its GitHub App authentication (see upstream docs/setup.md).
       id-token: write
     steps:
       - name: Checkout repository
@@ -25,6 +27,26 @@ jobs:
           fetch-depth: 1
           # Access token with `workflow` scope, required to push changes to workflow files.
           token: ${{ secrets.WORKFLOW_SECRET }}
+
+      # Deterministic cleanup of proposal branches left by a run that failed
+      # between `git push` and `gh pr create` — deliberately scripted here
+      # rather than delegated to the agent, so a destructive git operation
+      # never depends on LLM judgement. The one-hour age guard protects
+      # branches someone may have just pushed outside this workflow.
+      - name: Delete orphaned proposal branches
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_SECRET }}
+        run: |
+          git ls-remote --heads origin 'claude-action-docs-sync-*' | while read -r sha ref; do
+            branch="${ref#refs/heads/}"
+            open_prs=$(gh pr list --head "$branch" --state open --json number --jq 'length')
+            committed=$(gh api "repos/$GITHUB_REPOSITORY/commits/$sha" --jq '.commit.committer.date')
+            age=$(( $(date +%s) - $(date -d "$committed" +%s) ))
+            if [ "$open_prs" -eq 0 ] && [ "$age" -gt 3600 ]; then
+              echo "Deleting orphaned branch $branch (no open PR, tip ${age}s old)"
+              git push origin --delete "$branch"
+            fi
+          done
 
       - name: Run Claude Code
         uses: anthropics/claude-code-action@v1
@@ -74,11 +96,10 @@ jobs:
                `gh pr list --base main --state open --json headRefName --jq '.[].headRefName'`.
                If any branch name starts with `claude-action-docs-sync-`, stop —
                a proposal is already pending review.
-               Then check for leftover branches from a failed earlier run:
-               `git ls-remote --heads origin 'claude-action-docs-sync-*'`.
-               A remote branch with that prefix but no open PR is an orphan —
-               delete it with `git push origin --delete <branch>` before proceeding
-               (safe: the concurrency group guarantees no parallel run owns it).
+               Orphaned branches from failed runs are already removed by an earlier
+               workflow step, so if your later push is still rejected because the
+               branch exists, stop and report the conflict — never force-push
+               and never delete branches yourself.
 
             6. Otherwise:
                - configure git identity as github-actions[bot]
@@ -89,9 +110,11 @@ jobs:
                  which upstream recommendation changed, quoting or linking the relevant
                  upstream documentation.
 
-          # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
+          # See https://github.com/anthropics/claude-code-action/blob/v1/docs/usage.md
           # or https://code.claude.com/docs/en/cli-reference for available options
           # Bash is scoped to the exact commands the task needs — this job runs unattended
           # with a workflow-scoped token while reading external content, so unrestricted
           # Bash (or even a blanket git:*) would be an unnecessary attack surface.
-          claude_args: '--allowed-tools "Bash(git config:*),Bash(git checkout:*),Bash(git branch:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git ls-remote:*),Bash(git add:*),Bash(git commit:*),Bash(git push:*),Bash(gh pr list:*),Bash(gh pr create:*),Bash(date:*),WebFetch,WebSearch"'
+          # No WebSearch: every URL the task needs is hardcoded in the prompt,
+          # so open-ended web discovery would only widen the egress surface.
+          claude_args: '--allowed-tools "Bash(git config:*),Bash(git checkout:*),Bash(git branch:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git add:*),Bash(git commit:*),Bash(git push:*),Bash(gh pr list:*),Bash(gh pr create:*),Bash(date:*),WebFetch"'
