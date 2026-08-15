@@ -37,14 +37,16 @@ jobs:
             Your task is to keep this repository's Claude-related GitHub workflows
             in sync with the current upstream recommendations for anthropics/claude-code-action.
 
-            1. Read the upstream documentation:
-               - https://raw.githubusercontent.com/anthropics/claude-code-action/main/README.md
-               - https://raw.githubusercontent.com/anthropics/claude-code-action/main/docs/setup.md
-               - https://raw.githubusercontent.com/anthropics/claude-code-action/main/docs/usage.md
-               - https://raw.githubusercontent.com/anthropics/claude-code-action/main/docs/configuration.md
-               - https://raw.githubusercontent.com/anthropics/claude-code-action/main/docs/faq.md
-               - https://raw.githubusercontent.com/anthropics/claude-code-action/main/docs/migration-guide.md
-               - https://raw.githubusercontent.com/anthropics/claude-code-action/main/examples/claude.yml
+            1. Read the upstream documentation at the `v1` tag — the floating release tag
+               the workflows here actually run — not `main`, which may describe
+               not-yet-released behavior:
+               - https://raw.githubusercontent.com/anthropics/claude-code-action/v1/README.md
+               - https://raw.githubusercontent.com/anthropics/claude-code-action/v1/docs/setup.md
+               - https://raw.githubusercontent.com/anthropics/claude-code-action/v1/docs/usage.md
+               - https://raw.githubusercontent.com/anthropics/claude-code-action/v1/docs/configuration.md
+               - https://raw.githubusercontent.com/anthropics/claude-code-action/v1/docs/faq.md
+               - https://raw.githubusercontent.com/anthropics/claude-code-action/v1/docs/migration-guide.md
+               - https://raw.githubusercontent.com/anthropics/claude-code-action/v1/examples/claude.yml
                - https://code.claude.com/docs/en/github-actions
 
             2. Compare the recommendations against these local workflow files:
@@ -72,6 +74,11 @@ jobs:
                `gh pr list --base main --state open --json headRefName --jq '.[].headRefName'`.
                If any branch name starts with `claude-action-docs-sync-`, stop —
                a proposal is already pending review.
+               Then check for leftover branches from a failed earlier run:
+               `git ls-remote --heads origin 'claude-action-docs-sync-*'`.
+               A remote branch with that prefix but no open PR is an orphan —
+               delete it with `git push origin --delete <branch>` before proceeding
+               (safe: the concurrency group guarantees no parallel run owns it).
 
             6. Otherwise:
                - configure git identity as github-actions[bot]
@@ -86,5 +93,5 @@ jobs:
           # or https://code.claude.com/docs/en/cli-reference for available options
           # Bash is scoped to the exact commands the task needs — this job runs unattended
           # with a workflow-scoped token while reading external content, so unrestricted
-          # Bash would be an unnecessary attack surface.
-          claude_args: '--allowed-tools "Bash(git:*),Bash(gh pr list:*),Bash(gh pr create:*),Bash(date:*),WebFetch,WebSearch"'
+          # Bash (or even a blanket git:*) would be an unnecessary attack surface.
+          claude_args: '--allowed-tools "Bash(git config:*),Bash(git checkout:*),Bash(git branch:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git ls-remote:*),Bash(git add:*),Bash(git commit:*),Bash(git push:*),Bash(gh pr list:*),Bash(gh pr create:*),Bash(date:*),WebFetch,WebSearch"'
