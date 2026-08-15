@@ -1,0 +1,120 @@
+# Checks upstream claude-code-action documentation daily and proposes a PR
+# when the Claude workflows in this repository diverge from current recommendations.
+name: Claude Action Docs Sync
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # daily at 06:00 UTC
+  workflow_dispatch:
+
+# Prevents a manual dispatch racing a same-day scheduled run for the same proposal branch.
+concurrency:
+  group: claude-action-docs-sync
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      # Required by claude-code-action, which fetches a GitHub OIDC token
+      # for its GitHub App authentication (see upstream docs/setup.md).
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+          # Access token with `workflow` scope, required to push changes to workflow files.
+          token: ${{ secrets.WORKFLOW_SECRET }}
+
+      # Deterministic cleanup of proposal branches left by a run that failed
+      # between `git push` and `gh pr create` — deliberately scripted here
+      # rather than delegated to the agent, so a destructive git operation
+      # never depends on LLM judgement. The one-hour age guard protects
+      # branches someone may have just pushed outside this workflow.
+      - name: Delete orphaned proposal branches
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_SECRET }}
+        run: |
+          git ls-remote --heads origin 'claude-action-docs-sync-*' | while read -r sha ref; do
+            branch="${ref#refs/heads/}"
+            open_prs=$(gh pr list --head "$branch" --state open --json number --jq 'length')
+            committed=$(gh api "repos/$GITHUB_REPOSITORY/commits/$sha" --jq '.commit.committer.date')
+            age=$(( $(date +%s) - $(date -d "$committed" +%s) ))
+            if [ "$open_prs" -eq 0 ] && [ "$age" -gt 3600 ]; then
+              echo "Deleting orphaned branch $branch (no open PR, tip ${age}s old)"
+              git push origin --delete "$branch"
+            fi
+          done
+
+      - name: Run Claude Code
+        uses: anthropics/claude-code-action@v1
+        env:
+          # Access token with `workflow` scope, so `gh` can open PRs touching workflow files.
+          GH_TOKEN: ${{ secrets.WORKFLOW_SECRET }}
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            Your task is to keep this repository's Claude-related GitHub workflows
+            in sync with the current upstream recommendations for anthropics/claude-code-action.
+
+            1. Read the upstream documentation at the `v1` tag — the floating release tag
+               the workflows here actually run — not `main`, which may describe
+               not-yet-released behavior:
+               - https://raw.githubusercontent.com/anthropics/claude-code-action/v1/README.md
+               - https://raw.githubusercontent.com/anthropics/claude-code-action/v1/docs/setup.md
+               - https://raw.githubusercontent.com/anthropics/claude-code-action/v1/docs/usage.md
+               - https://raw.githubusercontent.com/anthropics/claude-code-action/v1/docs/configuration.md
+               - https://raw.githubusercontent.com/anthropics/claude-code-action/v1/docs/faq.md
+               - https://raw.githubusercontent.com/anthropics/claude-code-action/v1/docs/migration-guide.md
+               - https://raw.githubusercontent.com/anthropics/claude-code-action/v1/examples/claude.yml
+               - https://code.claude.com/docs/en/github-actions
+
+            2. Compare the recommendations against these local workflow files:
+               - .github/workflows/claude-code.yml (reusable, invoked by claude.yml)
+               - .github/workflows/claude-code-review.yml (reusable, invoked by review.yml)
+               - .github/workflows/claude.yml
+               - .github/workflows/review.yml
+               - .github/workflows/claude-action-docs-sync.yml (this workflow itself)
+
+            3. Constraints (see also CLAUDE.md):
+               - The reusable workflows are called from other repositories in the xemantic
+                 organization, so never rename an input, secret, or job.
+               - Direct pushes to main are rejected by a ruleset — changes must go through
+                 a pull request.
+               - Only propose changes driven by a real change in upstream recommendations:
+                 permissions, action inputs, claude_args syntax, deprecations, security guidance.
+                 Do not restyle or reorder the files, and do not touch deliberate local choices
+                 such as triggers, trigger conditions, or the list of allowed tools,
+                 unless upstream has deprecated the syntax they use.
+
+            4. If everything is already in line with upstream, print a short confirmation
+               of what you checked and stop. Do not create a branch or a PR.
+
+            5. Before making changes, check for an existing open proposal:
+               `gh pr list --base main --state open --json headRefName --jq '.[].headRefName'`.
+               If any branch name starts with `claude-action-docs-sync-`, stop —
+               a proposal is already pending review.
+               Orphaned branches from failed runs are already removed by an earlier
+               workflow step, so if your later push is still rejected because the
+               branch exists, stop and report the conflict — never force-push
+               and never delete branches yourself.
+
+            6. Otherwise:
+               - configure git identity as github-actions[bot]
+                 (email: github-actions[bot]@users.noreply.github.com),
+               - create a branch named `claude-action-docs-sync-<YYYYMMDD>` (use `date +%Y%m%d`),
+               - apply the minimal edits, commit with a `chore:` message, and push,
+               - open a PR against main with `gh pr create`, explaining in the body
+                 which upstream recommendation changed, quoting or linking the relevant
+                 upstream documentation.
+
+          # See https://github.com/anthropics/claude-code-action/blob/v1/docs/usage.md
+          # or https://code.claude.com/docs/en/cli-reference for available options
+          # Bash is scoped to the exact commands the task needs — this job runs unattended
+          # with a workflow-scoped token while reading external content, so unrestricted
+          # Bash (or even a blanket git:*) would be an unnecessary attack surface.
+          # No WebSearch: every URL the task needs is hardcoded in the prompt,
+          # so open-ended web discovery would only widen the egress surface.
+          claude_args: '--allowed-tools "Bash(git config:*),Bash(git checkout:*),Bash(git branch:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git add:*),Bash(git commit:*),Bash(git push:*),Bash(gh pr list:*),Bash(gh pr create:*),Bash(date:*),WebFetch"'
