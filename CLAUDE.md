@@ -37,6 +37,12 @@ so their existing line structure must be preserved rather than reflowed.
   search the org for `xemantic/.github/.github/workflows` before changing one.
 - The region between the `<!-- loc -->` markers in `profile/ABOUT.md` is regenerated weekly by `code-statistics.yml`; hand-edits there are overwritten.
 - `profile/README.md` renders publicly on github.com/xemantic, so edits are immediately visible org-wide rather than scoped to this repository.
+- Action versions are managed by Dependabot because it preserves floating major tags like `@v7`;
+  `saadmk11/github-actions-version-updater` cannot semver-parse such tags,
+  which made it bypass its own `release_types: major` filter and pin actions to exact patch releases.
+- A major bump of `anthropics/claude-code-action` must also update the `v1` documentation URLs
+  hardcoded in the `claude-action-docs-sync.yml` prompt,
+  or the daily sync agent will keep proposing changes based on the previous major's recommendations.
 
 ## Anti-patterns to avoid
 
