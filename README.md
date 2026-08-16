@@ -30,6 +30,7 @@ Called from other repositories — see [Using the reusable workflows](#using-the
 ### Workflows local to this repository
 
 - [code-statistics.yml](.github/workflows/code-statistics.yml) — updates the statistics in `profile/ABOUT.md`
+- [claude-action-docs-sync.yml](.github/workflows/claude-action-docs-sync.yml) — keeps the Claude workflows in sync with upstream recommendations
 - [claude.yml](.github/workflows/claude.yml) — applies `claude-code.yml` to this repository
 - [review.yml](.github/workflows/review.yml) — applies `claude-code-review.yml` to this repository
 
@@ -111,16 +112,24 @@ Hand-edits inside the markers are overwritten on the next run.
 
 ### Action version updates
 
-[Dependabot](.github/dependabot.yml) checks daily for new versions of the actions used by the workflows.
+[Dependabot](.github/dependabot.yml) checks daily for new versions of the actions used by the workflows in `.github/workflows`.
 Actions are referenced by floating major tags (e.g. `@v7`),
 a precision Dependabot preserves,
 so a pull request is raised only when a new major version is released.
+The reference template in [.github/workflows/reference](.github/workflows/reference) lies outside Dependabot's scan scope,
+so its action versions must be kept current by hand.
+
+### Claude action docs sync
+
+[claude-action-docs-sync.yml](.github/workflows/claude-action-docs-sync.yml) runs daily at 06:00 UTC, or on manual trigger,
+and opens a pull request when the Claude workflows here diverge
+from the current upstream recommendations for `anthropics/claude-code-action`.
 
 ## Secrets and variables
 
 | Name | Kind | Used by |
 | --- | --- | --- |
-| `WORKFLOW_SECRET` | secret | `code-statistics.yml`; needs the `workflow` scope, and permission to open pull requests |
+| `WORKFLOW_SECRET` | secret | `code-statistics.yml` and `claude-action-docs-sync.yml`; needs the `workflow` scope to push changes to workflow files, and permission to open pull requests |
 | `CLAUDE_CODE_OAUTH_TOKEN` | secret | `claude-code.yml` and `claude-code-review.yml` |
 | `DEFAULT_JAVA_DISTRIBUTION` | variable | `build-gradle.yml`, when `java_distribution` is omitted |
 | `DEFAULT_JAVA_VERSION` | variable | `build-gradle.yml`, when `java_version` is omitted |
