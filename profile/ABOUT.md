@@ -56,7 +56,7 @@ If you like what we do, or if you are using our open source software, please con
 ## Code Statistics
 
 <!-- stars -->
-Stars across all Xemantic open source repositories: **863**
+Stars across all Xemantic open source repositories: **864**
 <!-- /stars -->
 
 Lines of code across all Xemantic open source projects:
@@ -64,26 +64,26 @@ Lines of code across all Xemantic open source projects:
 <!-- loc -->
 | Language | Files | Lines of Code |
 |----------|------:|--------------:|
-| Kotlin | 1544 | 356432 |
-| Markdown | 855 | 119682 |
+| Kotlin | 1811 | 401134 |
+| Markdown | 943 | 137415 |
 | HTML | 185 | 39244 |
 | CSS | 29 | 28621 |
-| Python | 128 | 13847 |
-| Gradle | 161 | 9324 |
-| Bourne Shell | 139 | 9058 |
+| Python | 163 | 17613 |
+| Bourne Shell | 172 | 11202 |
+| Gradle | 176 | 9956 |
 | JavaScript | 55 | 6834 |
-| Java | 145 | 4859 |
-| YAML | 84 | 2504 |
+| Java | 146 | 4886 |
+| Text | 25 | 3123 |
+| YAML | 91 | 2787 |
+| TypeScript | 46 | 1755 |
 | SVG | 17 | 1614 |
-| JSON | 20 | 1255 |
+| JSON | 23 | 1348 |
 | DOS Batch | 18 | 1227 |
+| TOML | 38 | 1197 |
 | Maven | 18 | 1190 |
-| TOML | 35 | 1103 |
-| Text | 20 | 946 |
-| XML | 65 | 832 |
+| XML | 68 | 865 |
 | Rust | 13 | 658 |
-| TypeScript | 11 | 459 |
-| Properties | 74 | 442 |
+| Properties | 75 | 450 |
 | HCL | 5 | 294 |
 | Groovy | 2 | 203 |
 | Bourne Again Shell | 3 | 198 |
@@ -95,7 +95,7 @@ Lines of code across all Xemantic open source projects:
 | make | 1 | 59 |
 | SQL | 1 | 44 |
 | Ruby | 1 | 21 |
-| Dockerfile | 1 | 7 |
+| Dockerfile | 2 | 19 |
 | MSBuild script | 1 | 7 |
-| **Total** | **3647** | **601432** |
+| **Total** | **4144** | **674432** |
 <!-- /loc -->
