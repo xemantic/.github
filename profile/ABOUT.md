@@ -65,26 +65,26 @@ Lines of code across all Xemantic open source projects:
 | Language | Files | Lines of Code |
 |----------|------:|--------------:|
 | JSON | 380 | 958396 |
-| Kotlin | 2486 | 634973 |
-| Markdown | 1782 | 259713 |
-| HTML | 205 | 62651 |
+| Kotlin | 2553 | 641002 |
+| Markdown | 1795 | 261285 |
+| HTML | 206 | 62681 |
 | Python | 350 | 60735 |
-| CSS | 29 | 28621 |
+| CSS | 30 | 28845 |
 | XML | 115 | 21860 |
 | Text | 76 | 18403 |
-| Bourne Shell | 205 | 12990 |
-| Gradle | 180 | 10509 |
-| JavaScript | 55 | 6834 |
+| Bourne Shell | 208 | 13119 |
+| Gradle | 182 | 10593 |
+| JavaScript | 56 | 6841 |
 | Java | 146 | 4886 |
 | Scheme | 4 | 3159 |
-| YAML | 96 | 3028 |
+| YAML | 97 | 3039 |
 | TypeScript | 136 | 2855 |
 | SVG | 17 | 1614 |
+| TOML | 40 | 1243 |
 | DOS Batch | 18 | 1227 |
-| TOML | 39 | 1219 |
 | Maven | 18 | 1190 |
 | Rust | 13 | 658 |
-| Properties | 78 | 469 |
+| Properties | 79 | 472 |
 | HCL | 5 | 294 |
 | Groovy | 2 | 203 |
 | Bourne Again Shell | 3 | 198 |
@@ -98,5 +98,5 @@ Lines of code across all Xemantic open source projects:
 | Ruby | 1 | 21 |
 | Dockerfile | 2 | 19 |
 | MSBuild script | 1 | 7 |
-| **Total** | **6460** | **2097303** |
+| **Total** | **6551** | **2105416** |
 <!-- /loc -->
