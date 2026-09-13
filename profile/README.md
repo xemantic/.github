@@ -9,7 +9,7 @@
 [Xemantic](https://xemantic.com) is an applied philosophy collective founded by [Julia Thomas](https://github.com/uncannyJulia) and [Kazik Pogoda](https://github.com/morisil) — an independent AI research lab, mathematics of perception research lab, and computational art studio.
 
 <!-- stats -->
-⭐ **881** GitHub stars · 💻 **2152049** lines of code
+⭐ **889** GitHub stars · 💻 **2184996** lines of code
 <!-- /stats -->
 
 [Learn more about us](ABOUT.md)
