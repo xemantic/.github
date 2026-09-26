@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: read
+      pull-requests: write # only for the fallback step below; the review itself posts as claude[bot]
       issues: read
       id-token: write
 
@@ -28,26 +28,57 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Record review start time
+        run: echo "REVIEW_STARTED_AT=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_ENV"
+
+      # Runs the official code-review plugin, as recommended in
+      # https://code.claude.com/docs/en/github-actions#run-a-skill
       - name: Run Claude Code Review
         id: claude-review
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          prompt: |
-            ${{ format('REPO: {0}
-            PR NUMBER: {1}
+          plugin_marketplaces: 'https://github.com/anthropics/claude-code.git'
+          plugins: 'code-review@claude-code-plugins'
+          # `--comment` makes the skill post its findings (inline comments, or one summary comment
+          # when it finds none) instead of leaving them in the run log.
+          # The plugin skips a PR Claude has already commented on; the arguments below lift that,
+          # so every push is reviewed again, without repeating issues raised by earlier reviews.
+          prompt: >-
+            /code-review:code-review --comment
+            ${{ github.repository }}/pull/${{ github.event.pull_request.number }}
+            — This review runs on every push to the pull request.
+            Do not skip the pull request because Claude has already commented on it:
+            review it again, and do not repeat issues already raised in Claude's earlier comments.
+          # The action starts the MCP server posting inline comments only when --allowedTools names it,
+          # even though the skill's own allowed-tools frontmatter lists it too.
+          claude_args: '--allowedTools "mcp__github_inline_comment__create_inline_comment"'
 
-            Please review this pull request and provide feedback on:
-            - Code quality and best practices
-            - Potential bugs or issues
-            - Performance considerations
-            - Security concerns
-            - Test coverage
-
-            Use the repository''s CLAUDE.md for guidance on style and conventions. Be constructive and helpful in your feedback.
-
-            Use `gh pr comment` with your Bash tool to leave your review as a comment on the PR.', github.repository, github.event.pull_request.number) }}
-            
-          # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
-          # or https://code.claude.com/docs/en/cli-reference for available options
-          claude_args: '--allowed-tools "Bash(gh issue view:*),Bash(gh search:*),Bash(gh issue list:*),Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr list:*),WebSearch,WebFetch"'
+      # Safety net: if the review finished without commenting, post its final message ourselves,
+      # so a review is never lost with the runner.
+      - name: Post review if Claude did not
+        if: always() && steps.claude-review.outputs.execution_file != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXECUTION_FILE: ${{ steps.claude-review.outputs.execution_file }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          count_since() {
+            gh api --paginate "$1" \
+              --jq "[.[] | select(.user.login == \"claude[bot]\" and .created_at >= \"$REVIEW_STARTED_AT\")] | length" \
+              | awk '{ n += $1 } END { print n + 0 }'
+          }
+          posted=$(( $(count_since "repos/$REPO/issues/$PR_NUMBER/comments") + $(count_since "repos/$REPO/pulls/$PR_NUMBER/comments") ))
+          if [ "$posted" -gt 0 ]; then
+            echo "Claude posted its review itself ($posted comments)"
+            exit 0
+          fi
+          result=$(jq -r '[.[] | select(.type == "result")] | last | .result // empty' "$EXECUTION_FILE")
+          if [ -z "$result" ]; then
+            echo "::warning::Claude posted no review and left no final message"
+            exit 0
+          fi
+          echo "::warning::Claude did not post its review; posting its final message instead"
+          printf '%s\n\n<sub>Posted by the workflow: the review agent finished without commenting.</sub>\n' "$result" \
+            | gh pr comment "$PR_NUMBER" --repo "$REPO" --body-file -
