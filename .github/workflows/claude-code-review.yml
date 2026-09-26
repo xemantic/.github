@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: read
+      pull-requests: write # only for the fallback step below
       issues: read
       id-token: write
 
@@ -26,7 +26,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
         with:
-          fetch-depth: 1
+          fetch-depth: 0 # so the agent can git diff/log against the base branch
+
+      - name: Record review start time
+        run: echo "REVIEW_STARTED_AT=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_ENV"
 
       - name: Run Claude Code Review
         id: claude-review
@@ -46,8 +49,39 @@ jobs:
 
             Use the repository''s CLAUDE.md for guidance on style and conventions. Be constructive and helpful in your feedback.
 
-            Use `gh pr comment` with your Bash tool to leave your review as a comment on the PR.', github.repository, github.event.pull_request.number) }}
+            Do the review yourself; do not delegate it to subagents.
+
+            Use `gh pr comment` with your Bash tool to leave your review as a comment on the PR.
+            Your task is complete ONLY when `gh pr comment` has succeeded. Never end with the review as your final message instead.', github.repository, github.event.pull_request.number) }}
             
           # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
           # or https://code.claude.com/docs/en/cli-reference for available options
-          claude_args: '--allowed-tools "Bash(gh issue view:*),Bash(gh search:*),Bash(gh issue list:*),Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr list:*),WebSearch,WebFetch"'
+          # Subagents are disallowed: when the review was delegated, the main agent tended to end
+          # with the findings as its final message and never call `gh pr comment`.
+          claude_args: '--disallowed-tools Agent --allowed-tools "Bash(gh issue view:*),Bash(gh search:*),Bash(gh issue list:*),Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr list:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),WebSearch,WebFetch"'
+
+      # Safety net: if the agent finished without commenting, post its final message ourselves,
+      # so a review is never lost with the runner.
+      - name: Post review if Claude did not
+        if: always() && steps.claude-review.outputs.execution_file != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXECUTION_FILE: ${{ steps.claude-review.outputs.execution_file }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          posted=$(gh api --paginate "repos/$REPO/issues/$PR_NUMBER/comments" \
+            --jq "[.[] | select(.user.login == \"claude[bot]\" and .created_at >= \"$REVIEW_STARTED_AT\")] | length" \
+            | awk '{ n += $1 } END { print n + 0 }')
+          if [ "$posted" -gt 0 ]; then
+            echo "Claude posted its review itself"
+            exit 0
+          fi
+          result=$(jq -r '[.[] | select(.type == "result")] | last | .result // empty' "$EXECUTION_FILE")
+          if [ -z "$result" ]; then
+            echo "::warning::Claude posted no review and left no final message"
+            exit 0
+          fi
+          echo "::warning::Claude did not post its review; posting its final message instead"
+          printf '%s\n\n<sub>Posted by the workflow: the review agent finished without commenting.</sub>\n' "$result" \
+            | gh pr comment "$PR_NUMBER" --repo "$REPO" --body-file -
