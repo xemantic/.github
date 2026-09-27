@@ -65,30 +65,30 @@ Lines of code across all Xemantic open source projects:
 | Language | Files | Lines of Code |
 |----------|------:|--------------:|
 | JSON | 380 | 958396 |
-| Kotlin | 2804 | 708396 |
-| Markdown | 2013 | 292837 |
-| HTML | 207 | 63261 |
+| Kotlin | 2905 | 727733 |
+| Markdown | 2087 | 302815 |
+| HTML | 208 | 63272 |
 | Python | 360 | 61813 |
-| CSS | 33 | 29540 |
-| XML | 115 | 21860 |
-| Bourne Shell | 318 | 18546 |
-| Text | 76 | 18403 |
-| Gradle | 187 | 11752 |
+| CSS | 33 | 29568 |
+| XML | 116 | 21866 |
+| Bourne Shell | 371 | 20828 |
+| Text | 85 | 18848 |
+| Gradle | 191 | 11993 |
 | JavaScript | 57 | 7062 |
-| Java | 146 | 4886 |
+| Java | 147 | 4995 |
 | Scheme | 4 | 3159 |
-| YAML | 99 | 3072 |
+| YAML | 101 | 3117 |
 | TypeScript | 137 | 2977 |
 | SVG | 19 | 1634 |
-| TOML | 42 | 1292 |
+| TOML | 46 | 1470 |
 | DOS Batch | 18 | 1227 |
 | Maven | 18 | 1190 |
-| Rust | 13 | 658 |
-| Properties | 79 | 477 |
+| Rust | 14 | 1028 |
+| Go | 3 | 500 |
+| Properties | 79 | 472 |
 | HCL | 5 | 294 |
 | Groovy | 2 | 203 |
 | Bourne Again Shell | 3 | 198 |
-| Go | 2 | 123 |
 | C# | 1 | 105 |
 | C | 2 | 104 |
 | CSV | 9 | 77 |
@@ -98,5 +98,5 @@ Lines of code across all Xemantic open source projects:
 | Ruby | 1 | 21 |
 | Dockerfile | 2 | 19 |
 | MSBuild script | 1 | 7 |
-| **Total** | **7157** | **2213751** |
+| **Total** | **7409** | **2247153** |
 <!-- /loc -->
