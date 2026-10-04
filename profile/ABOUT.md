@@ -65,15 +65,15 @@ Lines of code across all Xemantic open source projects:
 | Language | Files | Lines of Code |
 |----------|------:|--------------:|
 | JSON | 380 | 958396 |
-| Kotlin | 2905 | 727733 |
-| Markdown | 2087 | 302815 |
-| HTML | 208 | 63272 |
+| Kotlin | 3027 | 757055 |
+| Markdown | 2171 | 308968 |
+| HTML | 211 | 63303 |
 | Python | 360 | 61813 |
 | CSS | 33 | 29568 |
 | XML | 116 | 21866 |
 | Bourne Shell | 371 | 20828 |
 | Text | 85 | 18848 |
-| Gradle | 191 | 11993 |
+| Gradle | 191 | 11995 |
 | JavaScript | 57 | 7062 |
 | Java | 147 | 4995 |
 | Scheme | 4 | 3159 |
@@ -98,5 +98,5 @@ Lines of code across all Xemantic open source projects:
 | Ruby | 1 | 21 |
 | Dockerfile | 2 | 19 |
 | MSBuild script | 1 | 7 |
-| **Total** | **7409** | **2247153** |
+| **Total** | **7618** | **2282661** |
 <!-- /loc -->
