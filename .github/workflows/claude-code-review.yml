@@ -38,8 +38,8 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          plugin_marketplaces: 'https://github.com/anthropics/claude-code.git'
-          plugins: 'code-review@claude-code-plugins'
+          plugin_marketplaces: 'https://github.com/anthropics/claude-plugins-official.git'
+          plugins: 'code-review@claude-plugins-official'
           # `--comment` makes the skill post its findings (inline comments, or one summary comment
           # when it finds none) instead of leaving them in the run log.
           # The plugin skips a PR Claude has already commented on; the arguments below lift that,
