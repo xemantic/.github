@@ -65,37 +65,36 @@ Lines of code across all Xemantic open source projects:
 | Language | Files | Lines of Code |
 |----------|------:|--------------:|
 | JSON | 389 | 959561 |
-| Kotlin | 2593 | 756504 |
-| Markdown | 2342 | 325167 |
-| HTML | 219 | 65340 |
-| Python | 270 | 53550 |
-| CSS | 34 | 29575 |
-| XML | 125 | 21965 |
-| Text | 91 | 19225 |
-| Gradle | 200 | 11702 |
+| Kotlin | 2606 | 760465 |
+| Markdown | 2359 | 327522 |
+| HTML | 219 | 66123 |
+| Python | 270 | 53677 |
+| CSS | 33 | 30731 |
+| XML | 126 | 21976 |
+| Text | 92 | 19334 |
+| Gradle | 200 | 11958 |
+| JavaScript | 62 | 7554 |
 | Go | 24 | 7117 |
-| JavaScript | 54 | 7011 |
-| Java | 444 | 6862 |
-| Bourne Shell | 69 | 5132 |
-| YAML | 107 | 3429 |
+| Java | 474 | 7062 |
+| Bourne Shell | 70 | 5301 |
+| YAML | 106 | 3390 |
 | Scheme | 4 | 3159 |
 | TypeScript | 65 | 2434 |
-| TOML | 50 | 1640 |
-| SVG | 19 | 1634 |
+| TOML | 50 | 1665 |
+| SVG | 23 | 1577 |
 | DOS Batch | 19 | 1300 |
 | Maven | 18 | 1190 |
 | Rust | 14 | 1028 |
-| Properties | 83 | 503 |
+| Properties | 83 | 504 |
 | Bourne Again Shell | 5 | 306 |
 | HCL | 5 | 294 |
 | Groovy | 2 | 203 |
+| GLSL | 3 | 149 |
 | C# | 1 | 105 |
 | C | 2 | 104 |
 | CSV | 9 | 77 |
-| GLSL | 2 | 59 |
 | make | 1 | 59 |
 | SQL | 1 | 44 |
-| Ruby | 1 | 21 |
 | Dockerfile | 2 | 19 |
 | MSBuild script | 1 | 7 |
 <!-- /loc -->
